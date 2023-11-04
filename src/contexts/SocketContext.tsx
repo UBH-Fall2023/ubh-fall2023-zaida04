@@ -23,17 +23,14 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    const socketIo = io(url);
+    if (socket) return;
+    const socketIo = io(url, { transports: ["websocket"] });
 
     setSocket(socketIo);
-
-    return () => {
-      socketIo.disconnect();
-    };
   }, [url]);
 
-  const emitEvent = (event: string, ...args: any[]) => {
-    socket?.emit(event, ...args);
+  const emitEvent = (event: string, data: any) => {
+    socket?.emit(event, typeof data === "object" ? JSON.stringify(data) : data);
   };
 
   return (

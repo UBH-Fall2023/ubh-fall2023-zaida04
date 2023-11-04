@@ -7,21 +7,35 @@ import { useSocket } from "@/contexts/SocketContext";
 import { useEffect } from "react";
 
 export default function ChatRoom() {
-  const [messages, setMessage] = useAtom(messageAtoms);
+  const [messages, setMessages] = useAtom(messageAtoms);
   const currentUserId = "1";
-  const { emitEvent } = useSocket();
+  const { socket, emitEvent } = useSocket();
+
+  const handleSendMessage = () => {
+    return emitEvent("newMessage", {
+      senderId: currentUserId,
+      content: "Hello World!",
+      receiverId: "2",
+      createdAt: new Date(),
+      roomId: "test-room-1",
+    } satisfies Omit<Message, "id">);
+  };
 
   useEffect(() => {
-    const handler = (data: any) => {
+    if (!socket) return;
+
+    const handler = (data: Message) => {
       console.log("Event data:", data);
+      setMessages((messages: Message[]) => [...messages, data]);
     };
 
-    socket.on("event", handler);
+    socket.on("chatMessage", handler);
+    emitEvent("joinRoom", "test-room-1");
 
     return () => {
       socket.off("event", handler);
     };
-  }, []);
+  }, [socket]);
 
   return (
     <div className="flex flex-col h-screen">
@@ -43,7 +57,7 @@ export default function ChatRoom() {
             className="flex-grow rounded-md"
             placeholder="Type a message..."
           />
-          <Button>Send</Button>
+          <Button onClick={handleSendMessage}>Send</Button>
         </div>
       </div>
     </div>

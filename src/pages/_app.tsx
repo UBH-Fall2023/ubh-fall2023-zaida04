@@ -7,7 +7,7 @@ import { SocketProvider } from "@/contexts/SocketContext";
 export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient();
   return (
-    <SocketProvider url="http://your-socket-io-server-url">
+    <SocketProvider url="http://localhost:4000/">
       <QueryClientProvider client={queryClient}>
         <Component {...pageProps} />
       </QueryClientProvider>
