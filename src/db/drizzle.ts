@@ -1,9 +1,18 @@
-import { pgTable, serial, text, integer, json } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, integer, uuid } from "drizzle-orm/pg-core";
+
+const id = (name?: string) =>
+  uuid(name ?? "id")
+    .primaryKey()
+    .defaultRandom();
+
+const singleId = (name: string) => uuid(name).notNull();
+
+const idArray = (name: string) => uuid(name).array().notNull();
 
 export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  first_name: text("first_name").notNull(),
-  last_name: text("last_name").notNull(),
+  id: id(),
+  firstName: text("firstName").notNull(),
+  lastName: text("lastName").notNull(),
   email: text("email").notNull(),
   password: text("password"), // nullable since it's suffixed with a question mark
   oauthProvider: text("oauthProvider"), // nullable
@@ -14,40 +23,40 @@ export const users = pgTable("users", {
 export type User = typeof users.$inferSelect;
 
 export const restaurants = pgTable("restaurants", {
-  id: serial("id").primaryKey(),
+  id: id(),
   name: text("name").notNull(),
   stars: integer("stars"), // Assuming integer is a valid type function similar to serial or text
 });
 export type Restaurant = typeof restaurants.$inferSelect;
 
 export const items = pgTable("items", {
-  id: serial("id").primaryKey(),
+  id: id(),
   name: text("name").notNull(),
   description: text("description").notNull(),
   stars: integer("stars"), // Assuming integer is a valid type function similar to serial or text
-  restaurantId: serial("restaurantId").notNull(),
+  restaurantId: singleId("restaurantId"),
 });
 export type Item = typeof items.$inferSelect;
 
 export const orders = pgTable("orders", {
-  id: serial("id").primaryKey(),
-  items: serial("items").array().notNull(),
-  ordererId: serial("ordererId"),
+  id: id(),
+  items: idArray("items"),
+  ordererId: singleId("ordererId"),
 });
 export type Order = typeof orders.$inferSelect;
 
 export const messages = pgTable("messages", {
-  id: serial("id").primaryKey(),
+  id: id(),
   content: text("content").notNull(),
-  senderId: serial("senderId"),
-  receiverId: serial("receiverId"),
+  senderId: singleId("senderId"),
+  receiverId: singleId("receiverId"),
 });
 export type Message = typeof messages.$inferSelect;
 
 export const rooms = pgTable("rooms", {
-  id: serial("id").primaryKey(),
+  id: id(),
   // For foreign key arrays, assuming the library allows for an array of references
-  chatterIDs: serial("chatterIDs").array().notNull(),
-  messageIDs: serial("messageIDs").array().notNull(),
+  chatterIDs: idArray("chatterIDs"),
+  messageIDs: idArray("messageIDs"),
 });
 export type Room = typeof rooms.$inferSelect;

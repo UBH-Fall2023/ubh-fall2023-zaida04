@@ -8,16 +8,16 @@ const { client, db } = makeDB(process.env.DATABASE_URL!);
 async function main() {
   await client.insert(users).values({
     email: "nico.03727@gmail.com",
-    first_name: "Zaid",
-    last_name: "Arshad",
+    firstName: "Zaid",
+    lastName: "Arshad",
     password: "IAMAPASSWORD",
   });
 
   for (let i = 0; i < 10; i++) {
     await client.insert(users).values({
       email: faker.internet.email(),
-      first_name: faker.person.firstName(),
-      last_name: faker.person.lastName(),
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
       password: faker.internet.password(),
     });
   }
@@ -29,23 +29,29 @@ async function main() {
     });
   }
 
-  for (let i = 0; i < 10; i++) {
+  const restaurantIds = await client.select().from(restaurants);
+  for (let i = 0; i < restaurantIds.length; i++) {
     await client.insert(items).values({
       name: faker.commerce.productName(),
-      restaurantId: faker.number.int({ min: 1, max: 10 }),
+      restaurantId: restaurantIds[i].id,
       description: faker.commerce.productDescription(),
     });
   }
 
-  for (let i = 0; i < 10; i++) {
+  const userIds = await client.select().from(users);
+  for (let i = 0; i < userIds.length; i++) {
     await client.insert(messages).values({
       content: faker.lorem.sentence(),
-      senderId: faker.number.int({ min: 1, max: 10 }),
-      receiverId: faker.number.int({ min: 1, max: 10 }),
+      senderId: userIds[i].id,
+      receiverId: randomElement(userIds).id,
     });
   }
 
   db.end();
+}
+
+function randomElement<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
 main();
