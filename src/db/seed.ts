@@ -44,6 +44,7 @@ async function main() {
       content: faker.lorem.sentence(),
       senderId: userIds[i].id,
       receiverId: randomElement(userIds).id,
+      roomId: faker.string.uuid(),
     });
   }
 

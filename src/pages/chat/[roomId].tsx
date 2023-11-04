@@ -3,10 +3,25 @@ import { Button } from "@/components/ui/button";
 import { useAtom } from "jotai";
 import { messageAtoms } from "@/lib/state";
 import { Message } from "@/db/drizzle";
+import { useSocket } from "@/contexts/SocketContext";
+import { useEffect } from "react";
 
 export default function ChatRoom() {
   const [messages, setMessage] = useAtom(messageAtoms);
   const currentUserId = "1";
+  const { emitEvent } = useSocket();
+
+  useEffect(() => {
+    const handler = (data: any) => {
+      console.log("Event data:", data);
+    };
+
+    socket.on("event", handler);
+
+    return () => {
+      socket.off("event", handler);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col h-screen">
