@@ -1,4 +1,4 @@
-import { pgTable, serial, text, integer, uuid } from "drizzle-orm/pg-core";
+import { pgTable, timestamp, text, integer, uuid } from "drizzle-orm/pg-core";
 
 const id = (name?: string) =>
   uuid(name ?? "id")
@@ -48,6 +48,9 @@ export type Order = typeof orders.$inferSelect;
 export const messages = pgTable("messages", {
   id: id(),
   content: text("content").notNull(),
+  createdAt: timestamp("createdAt")
+    .notNull()
+    .$defaultFn(() => new Date()),
   senderId: singleId("senderId"),
   receiverId: singleId("receiverId"),
 });
