@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { makeDB } from "@/db/client";
-import { messages } from "@/db/drizzle";
+import { messages, users } from "@/db/drizzle";
 import { and, eq, or } from "drizzle-orm";
 
 export default async function handler(
@@ -11,7 +11,6 @@ export default async function handler(
 
   const starterId = req.query.starterId as string;
   const receiverId = req.query.receiverId as string;
-  console.log(starterId, receiverId);
 
   if (!starterId || !receiverId) {
     return res.status(400).json({ error: "Missing query params" });
@@ -30,5 +29,10 @@ export default async function handler(
       ),
     );
 
-  return res.json({ messages: existingMessages });
+  const fetchedUsers = await client
+    .select()
+    .from(users)
+    .where(or(eq(users.id, starterId), eq(users.id, receiverId)));
+
+  return res.json({ messages: existingMessages, users: fetchedUsers });
 }
