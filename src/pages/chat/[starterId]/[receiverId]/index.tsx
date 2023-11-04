@@ -5,24 +5,39 @@ import { messageAtoms } from "@/lib/state";
 import { Message } from "@/db/drizzle";
 import { useSocket } from "@/contexts/SocketContext";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
 
+interface FormValues {
+  message: string;
+}
 export default function ChatRoom() {
+  const router = useRouter();
   const [messages, setMessages] = useAtom(messageAtoms);
-  const currentUserId = "1";
+  const { register, handleSubmit, reset } = useForm<FormValues>();
   const { socket, emitEvent } = useSocket();
+  const senderId = router.query.starterId as string;
+  const receiverId = router.query.receiverId as string;
 
-  const handleSendMessage = () => {
+  const handleSendMessage = (data: FormValues) => {
+    reset();
     return emitEvent("newMessage", {
-      senderId: currentUserId,
-      content: "Hello World!",
-      receiverId: "2",
+      senderId,
+      content: data.message,
+      receiverId,
       createdAt: new Date(),
-      roomId: "test-room-1",
     } satisfies Omit<Message, "id">);
   };
 
+  function scrollToBottom(elementId: string) {
+    const element = document.getElementById(elementId);
+    if (!element) return console.log("Element not found");
+
+    element.scrollTop = element.scrollHeight;
+  }
+
   useEffect(() => {
-    if (!socket) return;
+    if (!socket || !senderId) return;
 
     const handler = (data: Message) => {
       console.log("Event data:", data);
@@ -30,36 +45,63 @@ export default function ChatRoom() {
     };
 
     socket.on("chatMessage", handler);
-    emitEvent("joinRoom", "test-room-1");
+    emitEvent("joinRoom", senderId);
 
     return () => {
       socket.off("event", handler);
     };
-  }, [socket]);
+  }, [socket, senderId]);
+
+  useEffect(() => {
+    scrollToBottom("chat-container");
+  }, [messages]);
+
+  useEffect(() => {
+    if (!senderId || !receiverId) return;
+
+    async function fetchMessages() {
+      const res = await fetch(`/api/chat/${senderId}/${receiverId}`);
+      const json = await res.json();
+      setMessages(json.messages);
+    }
+
+    fetchMessages();
+  }, [senderId, receiverId]);
 
   return (
     <div className="flex flex-col h-screen">
       <div className="p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <h2 className="text-xl font-bold">Chat</h2>
       </div>
-      <div className="flex-grow overflow-y-auto p-4 space-y-4">
+      <div
+        id="chat-container"
+        className="flex-grow overflow-y-auto p-4 space-y-4"
+      >
         {messages.map((message) => (
           <ChatMessage
-            isMe={message.senderId === currentUserId}
+            isMe={message.senderId === senderId}
             key={message.id}
             message={message}
           />
         ))}
       </div>
-      <div className="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+      <form
+        onSubmit={handleSubmit(handleSendMessage)}
+        className="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700"
+      >
         <div className="flex space-x-2">
           <Input
             className="flex-grow rounded-md"
             placeholder="Type a message..."
+            {...register("message", {
+              minLength: 1,
+              maxLength: 300,
+              required: true,
+            })}
           />
-          <Button onClick={handleSendMessage}>Send</Button>
+          <Button onClick={handleSubmit(handleSendMessage)}>Send</Button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

@@ -50,6 +50,9 @@ dependencies:
   react-dom:
     specifier: ^18
     version: 18.0.0(react@18.0.0)
+  react-hook-form:
+    specifier: ^7.48.0
+    version: 7.48.0(react@18.0.0)
   socket.io:
     specifier: ^4.7.2
     version: 4.7.2
@@ -1868,6 +1871,15 @@ packages:
       loose-envify: 1.4.0
       react: 18.0.0
       scheduler: 0.21.0
+    dev: false
+
+  /react-hook-form@7.48.0(react@18.0.0):
+    resolution: {integrity: sha512-XCjPkTtpvjMSSCuL1MymdoeALeasKV4WAx093K8txqTiBzVTPwpBLo8dZdgPAmH4AHog8c4gfRRYxrvk0nKUow==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.0.0
     dev: false
 
   /react@18.0.0:

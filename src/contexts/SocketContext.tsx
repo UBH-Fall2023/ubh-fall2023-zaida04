@@ -27,6 +27,9 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
     const socketIo = io(url, { transports: ["websocket"] });
 
     setSocket(socketIo);
+    return () => {
+      socketIo.disconnect();
+    };
   }, [url]);
 
   const emitEvent = (event: string, data: any) => {

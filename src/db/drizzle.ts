@@ -79,7 +79,7 @@ export const order_relation = relations(orders, ({ one }) => {
 export const messages = pgTable("messages", {
   id: id(),
   content: text("content").notNull(),
-  roomId: uuid("roomId"),
+  // roomId: uuid("roomId"),
   createdAt: timestamp("createdAt").$defaultFn(() => new Date()),
   senderId: singleId("senderId"),
   receiverId: singleId("receiverId"),
@@ -95,24 +95,24 @@ export const message_relation = relations(messages, ({ one }) => {
       fields: [messages.receiverId],
       references: [users.id],
     }),
-    room: one(rooms, {
-      fields: [messages.roomId],
-      references: [rooms.id],
-    }),
+    // room: one(rooms, {
+    //   fields: [messages.roomId],
+    //   references: [rooms.id],
+    // }),
   };
 });
 
-export const rooms = pgTable("rooms", {
-  id: id(),
-  // For foreign key arrays, assuming the library allows for an array of references
-  chatterIDs: idArray("chatterIDs"),
-  messageIDs: idArray("messageIDs"),
-});
-export type Room = typeof rooms.$inferSelect;
+// export const rooms = pgTable("rooms", {
+//   id: id(),
+//   // For foreign key arrays, assuming the library allows for an array of references
+//   chatterIDs: idArray("chatterIDs"),
+//   messageIDs: idArray("messageIDs"),
+// });
+// export type Room = typeof rooms.$inferSelect;
 
-export const rooms_relations = relations(messages, ({ many }) => {
-  return {
-    messages: many(messages),
-    chatters: many(users),
-  };
-});
+// export const rooms_relations = relations(messages, ({ many }) => {
+//   return {
+//     messages: many(messages),
+//     chatters: many(users),
+//   };
+// });
