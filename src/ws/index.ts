@@ -1,6 +1,7 @@
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
 import { Message } from "../db/drizzle";
+
 import express from "express";
 
 const app = express();
@@ -16,18 +17,20 @@ app.get("/", (req, res) => res.json({ message: "Hello world!" }));
 
 io.on("connection", (socket: Socket) => {
   console.log("a user connected");
-  // list all rooms and people in them:
-  const rooms = io.sockets.adapter.rooms;
-  console.log(rooms);
 
   socket.on("joinRoom", (roomId: string) => {
     socket.join(roomId);
-    console.log(`User joined room: ${roomId}`);
+    const roomSizeOr0 = io.sockets.adapter.rooms.get(roomId)?.size || 0;
+
+    console.log(
+      `User joined room: ${roomId}. Room has ${roomSizeOr0 + 1} users`,
+    );
   });
 
   socket.on("newMessage", (m: string) => {
     const msg = JSON.parse(m) as Message;
     console.log(`New message: ${msg.content} to room ${msg.roomId}`);
+
     io.in(msg.roomId).emit("chatMessage", msg);
   });
 

@@ -1,5 +1,12 @@
 import { relations } from "drizzle-orm";
-import { pgTable, timestamp, text, integer, uuid } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  timestamp,
+  text,
+  integer,
+  uuid,
+  numeric,
+} from "drizzle-orm/pg-core";
 
 const id = (name?: string) =>
   uuid(name ?? "id")
@@ -49,6 +56,11 @@ export const item_relation = relations(items, ({ one }) => {
 
 export const orders = pgTable("orders", {
   id: id(),
+  orderTotal: numeric("orderTotal").notNull(),
+  createdAt: timestamp("createdAt")
+    .notNull()
+    .$defaultFn(() => new Date()),
+  tips: numeric("tips").notNull(),
   items: idArray("items"),
   ordererId: singleId("ordererId"),
 });
@@ -69,7 +81,7 @@ export const order_relation = relations(orders, ({ one }) => {
 export const messages = pgTable("messages", {
   id: id(),
   content: text("content").notNull(),
-  roomId: singleId("roomId"),
+  roomId: uuid("roomId"),
   createdAt: timestamp("createdAt")
     .notNull()
     .$defaultFn(() => new Date()),

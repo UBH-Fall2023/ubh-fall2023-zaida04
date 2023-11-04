@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "76a53d5c-cbae-4d04-a653-ee4c978c1f3b",
-  "prevId": "601d58ae-f080-4138-906e-fb06fb898424",
+  "id": "abe3c1da-cbb6-4686-8411-15c037299232",
+  "prevId": "76a53d5c-cbae-4d04-a653-ee4c978c1f3b",
   "tables": {
     "items": {
       "name": "items",
@@ -106,6 +106,12 @@
         "orderTotal": {
           "name": "orderTotal",
           "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true
         },

@@ -2,6 +2,7 @@ import "dotenv/config";
 import { makeDB } from "../db/client";
 import { items, messages, restaurants, users } from "./drizzle";
 import { faker } from "@faker-js/faker";
+import { sql } from "drizzle-orm";
 
 const { client, db } = makeDB(process.env.DATABASE_URL!);
 
