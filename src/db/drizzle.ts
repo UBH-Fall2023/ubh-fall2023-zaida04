@@ -61,6 +61,8 @@ export const orders = pgTable("orders", {
   tips: numeric("tips").notNull(),
   items: idArray("items"),
   ordererId: singleId("ordererId"),
+  delivererId: singleId("delivererId"),
+  status: text("status", { enum: ['ordered', 'claimed', 'waiting', 'delivering', 'delivered', 'archived', 'cancelled']}),
 });
 export type Order = typeof orders.$inferSelect;
 export const order_relation = relations(orders, ({ one }) => {
@@ -68,6 +70,10 @@ export const order_relation = relations(orders, ({ one }) => {
     orderer: one(users, {
       fields: [orders.ordererId],
       references: [users.id],
+    }),
+    deliverer: one(users, {
+      fields: [orders.delivererId],
+      references: [users.id]
     }),
     items: one(items, {
       fields: [orders.items],
