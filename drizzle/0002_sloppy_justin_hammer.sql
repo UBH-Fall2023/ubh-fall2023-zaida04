@@ -1,1 +1,0 @@
-ALTER TABLE "orders" ADD COLUMN "createdAt" timestamp NOT NULL;

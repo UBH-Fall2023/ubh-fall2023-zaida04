@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   pgTable,
   timestamp,
@@ -57,9 +57,7 @@ export const item_relation = relations(items, ({ one }) => {
 export const orders = pgTable("orders", {
   id: id(),
   orderTotal: numeric("orderTotal").notNull(),
-  createdAt: timestamp("createdAt")
-    .notNull()
-    .$defaultFn(() => new Date()),
+  createdAt: timestamp("createdAt").$defaultFn(() => new Date()),
   tips: numeric("tips").notNull(),
   items: idArray("items"),
   ordererId: singleId("ordererId"),
@@ -82,9 +80,7 @@ export const messages = pgTable("messages", {
   id: id(),
   content: text("content").notNull(),
   roomId: uuid("roomId"),
-  createdAt: timestamp("createdAt")
-    .notNull()
-    .$defaultFn(() => new Date()),
+  createdAt: timestamp("createdAt").$defaultFn(() => new Date()),
   senderId: singleId("senderId"),
   receiverId: singleId("receiverId"),
 });

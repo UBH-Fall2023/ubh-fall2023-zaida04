@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "abe3c1da-cbb6-4686-8411-15c037299232",
+  "id": "455b0502-b965-45ba-b9de-7d4255e8ccd6",
   "prevId": "76a53d5c-cbae-4d04-a653-ee4c978c1f3b",
   "tables": {
     "items": {
@@ -113,7 +113,7 @@
           "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "tips": {
           "name": "tips",
