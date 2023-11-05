@@ -61,7 +61,7 @@ export const orders = pgTable("orders", {
   tips: numeric("tips").notNull(),
   items: idArray("items"),
   ordererId: singleId("ordererId"),
-  delivererId: singleId("delivererId"),
+  delivererId: uuid("delivererId"),
   status: text("status", { enum: ['ordered', 'claimed', 'waiting', 'delivering', 'delivered', 'archived', 'cancelled']}),
 });
 export type Order = typeof orders.$inferSelect;
