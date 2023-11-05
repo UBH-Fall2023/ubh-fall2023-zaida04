@@ -75,7 +75,10 @@ io.on("connection", (socket: Socket) => {
         })
         .where(eq(orders.id, order.id));
 
-      io.in(order.ordererId!).emit("orderUpdate", "claimed");
+      io.in(order.ordererId!).emit("orderUpdate", {
+        status: "claimed",
+        delivererId,
+      });
     });
   });
 

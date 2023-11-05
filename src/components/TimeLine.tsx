@@ -40,7 +40,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
         <div className={`w-0.5 bg-primary ${!isLastItem && "flex-grow"}`}></div>
       </div>
       <div className="flex-grow">
-        <div className="text-sm font-semibold text-primary">{data.date}</div>
+        {/* <div className="text-sm font-semibold text-primary">{data.date}</div> */}
         <div className="mt-1 text-lg font-semibold">{data.title}</div>
         <div className="text-gray-600">{data.description}</div>
       </div>

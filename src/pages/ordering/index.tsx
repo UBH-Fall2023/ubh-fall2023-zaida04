@@ -36,6 +36,8 @@ export default function (props: Props) {
     );
   }, [socket]);
 
+  useEffect(() => {}, []);
+
   return (
     <div className="h-screen w-screen  flex flex-col items-center justify-center">
       <Timeline status={status ?? "ordered"} />
