@@ -50,19 +50,26 @@ export default function OrderIndexPage() {
     fetchOrders();
   }, [delivererId]);
 
+  console.log(currentOrders, users);
   return (
     <div>
       <DelivererNavBar route={router.pathname} />
-      <div className="mt-8 flex flex-column md:flex-row w-100 justify-center align-center">
-        {currentOrders.map((order) => (
-          <Delivery
-            name={users.find((x) => x.id === order.ordererId)?.username ?? ""}
-            time={"Today"}
-            allItems={items}
-            items={order.items}
-            location={order.location!}
-          />
-        ))}
+      <div className="w-full flex justify-center">
+        <div className="mt-8 gap-4 flex flex-col w-fit justify-center items-center align-center">
+          {currentOrders.map((order) => {
+            const currentUser = users.find((x) => x.id === order.ordererId);
+
+            return (
+              <Delivery
+                name={currentUser?.firstName ?? currentUser?.username ?? ""}
+                time={"Today"}
+                allItems={items}
+                items={order.items}
+                location={order.location!}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );

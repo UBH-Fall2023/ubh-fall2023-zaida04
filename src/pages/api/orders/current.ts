@@ -34,10 +34,9 @@ export default async function handler(
   const fetchedItems = await client.query.items.findMany({
     where: inArray(
       items.id,
-      fetchedOrders.reduce(
-        (acc, cur) => [...acc, ...cur.items],
-        [] as string[],
-      ),
+      fetchedOrders.reduce((acc, cur) => [...acc, ...cur.items], [
+        "none",
+      ] as string[]),
     ),
   });
   console.log(2);
