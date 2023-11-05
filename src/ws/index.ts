@@ -89,6 +89,12 @@ io.on("connection", (socket: Socket) => {
       .where(eq(orders.id, orderId))
       .returning();
 
+    if (status === 'picked-up') {
+      setTimeout(() => {
+        io.in(userId[0].ordererId!).emit("orderUpdate", 'delivering');
+      }, (Math.random() * (20 - 5) + 5) * 1000)
+    }
+
     io.in(userId[0].ordererId!).emit("orderUpdate", status);
   });
 

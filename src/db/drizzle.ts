@@ -71,6 +71,7 @@ export const orders = pgTable("orders", {
       "ordered",
       "claimed",
       "picked-up",
+      "delivering",
       "delivered",
       "archived",
       "cancelled",

@@ -99,8 +99,10 @@ function Delivery(props: {
           <span>
             {props.allItems
               .filter((x) => props.items.includes(x.id))
-              .map((item) => (
-                <span>{item.name}, </span>
+              .map((item, i, row) => (
+                i + 1 === row.length
+                  ? <span>{item.name}</span>
+                  : <span>{item.name}, </span>
               ))}
           </span>
         </div>
@@ -109,11 +111,16 @@ function Delivery(props: {
           <span>{props.location}</span>
         </div>
       </CardContent>
+<<<<<<< Updated upstream
       <CardFooter className="w-max flex flex-row justify-around">
         <Button
           variant="outline"
           onClick={() => props.sendStatusUpdate(props.id, 0)}
         >
+=======
+      <CardFooter className="w-full flex flex-row justify-around">
+        <Button variant="outline" onClick={() => null}>
+>>>>>>> Stashed changes
           Picked Up
         </Button>
         <Button
