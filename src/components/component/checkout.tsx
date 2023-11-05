@@ -26,23 +26,8 @@ import { useAtom } from "jotai";
 import { cartAtom } from "@/lib/cartAtom";
 import { useRouter } from "next/router";
 import { useUser } from "@clerk/nextjs";
-enum Urgency {
-  HIGH = "high",
-  MEDIUM = "medium",
-  LOW = "low",
-}
-enum Payment {
-  VENMO = "venmo",
-  CASHAPP = "cashapp",
-  CASH = "cash",
-}
-type OrderForm = {
-  name: string;
-  location: string;
-  paymentType: Payment;
-  urgency: Urgency;
-  schedule: string;
-};
+import { OrderForm, Payment, Urgency } from "@/lib/types";
+
 export function Checkout() {
   const [cart, setCard] = useAtom(cartAtom);
   const [formState, setFormState] = useState<OrderForm>({

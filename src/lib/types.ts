@@ -10,3 +10,22 @@ export type MealItem = {
   restaurantId: string;
   checkoutId: string;
 };
+
+export type OrderForm = {
+  name: string;
+  location: string;
+  paymentType: Payment;
+  urgency: Urgency;
+  schedule: string;
+};
+
+export enum Urgency {
+  HIGH = "high",
+  MEDIUM = "medium",
+  LOW = "low",
+}
+export enum Payment {
+  VENMO = "venmo",
+  CASHAPP = "cashapp",
+  CASH = "cash",
+}
