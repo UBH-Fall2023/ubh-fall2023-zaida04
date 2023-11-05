@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import { ReactNode, memo } from "react";
@@ -6,32 +7,33 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Component() {
   return (
-    <section className="overflow-hidden w-full h-screen bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500">
-      <div className="container mx-auto px-6 py-20 text-center">
-        <h1 className="text-5xl font-bold text-white mb-4">
-          Campus Food Delivery
-        </h1>
-        <p className="text-xl text-white mb-8">
-          Get your favorite campus meals delivered right to your doorstep!
-        </p>
-        <div className="flex flex-col md:flex-row justify-center gap-10">
-          {
+    <>
+      <section className="overflow-hidden w-full h-screen bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500">
+        <div className="container mx-auto px-6 py-20 text-center">
+          <h1 className="text-6xl font-bold text-white mb-4">DeliverU</h1>
+          <p className="text-xl text-white mb-8">
+            Skip waiting in long lines and get back to studying.
+          </p>
+          <div className="flex flex-col md:flex-row justify-center gap-10">
+            {
+              <PathCard
+                href="/order"
+                icon={<MemoPizzaIcon />}
+                title="Save Time"
+                description="Skip the long lines and save up to 30+ minutes of your time. Spend more time studying, less time waiting."
+              />
+            }
             <PathCard
-              href="/order"
-              icon={<MemoPizzaIcon />}
-              title="Save Time"
-              description="Skip the long lines and save up to 30+ minutes of your time. Spend more time studying, less time waiting."
+              href="/delivery"
+              icon={<MemoDeliveryIcon />}
+              title="Earn Money"
+              description="Make some money in between classes by becoming a delivery driver for us. It's easy and flexible."
             />
-          }
-          <PathCard
-            href="/delivery"
-            icon={<MemoDeliveryIcon />}
-            title="Earn Money"
-            description="Make some money in between classes by becoming a delivery driver for us. It's easy and flexible."
-          />
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+      <Footer />
+    </>
   );
 }
 function PathCard(props: {
@@ -41,7 +43,7 @@ function PathCard(props: {
   icon: ReactNode;
 }) {
   return (
-    <Link href="#">
+    <Link href={props.href}>
       <div className="bg-white rounded-lg p-10 shadow-lg border-2 border-orange-500 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-110">
         {props.icon}
         <h2 className="text-2xl font-bold mb-2">{props.title}</h2>
