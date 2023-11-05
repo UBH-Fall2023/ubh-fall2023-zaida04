@@ -86,7 +86,7 @@ export default function ChatRoom() {
     <div className="flex flex-col h-screen">
       <div className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <h2 className="text-xl font-bold">Chat</h2>
-        <p>You are {user?.fullName}</p>
+        <p>You are {user?.fullName ?? user?.username}</p>
       </div>
       <div
         id="chat-container"
@@ -177,7 +177,7 @@ function ChatMessage(props: {
         />
         <div className={`w-full flex justify-center`}>
           <p className={`text-sm font-medium text-gray-600`}>
-            {props.user?.firstName ?? "Loading"}
+            {props.user?.firstName ?? props.user?.username ?? "Loading..."}
           </p>
         </div>
       </div>
