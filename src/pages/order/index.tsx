@@ -30,6 +30,7 @@ import Stars from "@/components/Stars";
 
 import { title } from "process";
 import { MealItem } from "@/lib/types";
+import RemoveCartItem from "@/components/RemoveCartItem";
 
 type Props = {};
 
@@ -397,24 +398,7 @@ const index = (props: Props) => {
                         <span>$100.00</span>
                         {cart.items.filter(
                           (cartItem) => cartItem.id === item.id,
-                        ).length !== 0 && (
-                          <Button
-                            onClick={() => {
-                              const toRemoveItemIdx = cart.items.findIndex(
-                                (cartItem) => cartItem.id === item.id,
-                              );
-                              setCart((prev) => ({
-                                ...prev,
-                                items: prev.items.filter(
-                                  (prevItem, idx) => idx !== toRemoveItemIdx,
-                                ),
-                              }));
-                            }}
-                            size={"icon"}
-                          >
-                            <Minus />
-                          </Button>
-                        )}
+                        ).length !== 0 && <RemoveCartItem item={item} />}
                         <Button
                           className="relative"
                           onClick={() => {
