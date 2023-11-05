@@ -17,6 +17,7 @@ import RemoveCartItem from "@/components/RemoveCartItem";
 import PopularCarousel from "@/components/PopularCarousel";
 import { queryAtom } from "@/lib/queryAtom";
 import CloseToMeCarousel from "@/components/CloseToMeCarousel";
+import { XCircle } from "lucide-react";
 
 type Props = {};
 
@@ -187,6 +188,18 @@ export default function Index(props: Props) {
                 <span className="">$0</span>
                 <Slider defaultValue={[33]} max={100} step={1} />{" "}
                 <span className="">$100</span>
+              </div>
+
+              <div className="">
+                <Button
+                  onClick={() => {
+                    modifyQuery(setQuery, []);
+                  }}
+                  variant={"ghost"}
+                  size={"icon"}
+                >
+                  <XCircle color="red" />
+                </Button>
               </div>
             </div>
             <div className="flex w-full p-9 gap-9 overflow-y-scroll h-full flex-wrap ">
