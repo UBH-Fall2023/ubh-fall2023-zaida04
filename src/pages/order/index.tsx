@@ -106,12 +106,15 @@ export default function Index(props: Props) {
 
           <Combobox value={value} setValue={setValue} />
         </div>
-        {value === "most-popular" ||
-          (value === "" && <PopularCarousel storeQuery={storeQuery} />)}
-        {value === "speed" ||
-          (value === "" && <CloseToMeCarousel storeQuery={storeQuery} />)}
-        {value === "budget" ||
-          (value === "" && <ReverseOrder storeQuery={storeQuery} />)}
+        {(value === "most-popular" || value === "") && (
+          <PopularCarousel storeQuery={storeQuery} />
+        )}
+        {(value === "speed" || value === "") && (
+          <CloseToMeCarousel storeQuery={storeQuery} />
+        )}
+        {(value === "budget" || value === "") && (
+          <ReverseOrder storeQuery={storeQuery} />
+        )}
 
         <div
           className={cn([
