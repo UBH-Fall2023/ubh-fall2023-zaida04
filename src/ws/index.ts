@@ -1,9 +1,9 @@
 import "dotenv/config";
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
-import { Message, messages, orders } from "../db/drizzle";
+import { Item, Message, Order, items, messages, orders } from "../db/drizzle";
 import { makeDB } from "@/db/client";
-
+import { inspect } from "util";
 import express from "express";
 enum Urgency {
   HIGH = "high",
@@ -24,6 +24,9 @@ type MealItem = {
   description: string;
   dateAdded: number | null;
   price: number;
+  rating: number;
+  restaurantId: string;
+  checkoutId: string;
 };
 
 type OrderForm = {
@@ -76,11 +79,37 @@ io.on("connection", (socket: Socket) => {
     io.in(msg.senderId).emit("chatMessage", msg);
   });
 
-  socket.on("order", async (m: OrderForm & {}) => {
-    await client.insert(orders).values({
-      items,
-    });
-  });
+  socket.on(
+    "order",
+    async (
+      order: OrderForm & { items: Array<MealItem> } & { orderedId: string },
+    ) => {
+      const checkoutItems: Array<Item> = order.items.map((item) => ({
+        stars: item.rating,
+        restaurantId: item.restaurantId,
+        id: item.checkoutId,
+        description: item.description,
+        name: item.name,
+      }));
+
+      const orderTotal = order.items
+        .reduce((prev, curr) => prev + curr.price, 0)
+        .toFixed(2);
+      const itemEntries = await client
+        .insert(items)
+        .values(checkoutItems)
+        .returning();
+
+      await client.insert(orders).values({
+        orderTotal,
+        tips: "123",
+        items: itemEntries.map((entry) => entry.id),
+        ordererId: order.orderedId,
+      });
+
+      io.in("walkers").emit("order", order);
+    },
+  );
 
   socket.on("disconnect", () => {
     console.log("user disconnected");

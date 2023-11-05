@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { makeDB } from "../db/client";
-import { items, messages, restaurants, users } from "./drizzle";
+import { items, messages, users } from "./drizzle";
 import { faker } from "@faker-js/faker";
 
 const { client, db } = makeDB(process.env.DATABASE_URL!);
@@ -22,21 +22,21 @@ async function main() {
     });
   }
 
-  for (let i = 0; i < 10; i++) {
-    await client.insert(restaurants).values({
-      name: faker.company.name(),
-      stars: faker.number.int({ min: 1, max: 5 }),
-    });
-  }
+  // for (let i = 0; i < 10; i++) {
+  //   await client.insert(restaurants).values({
+  //     name: faker.company.name(),
+  //     stars: faker.number.int({ min: 1, max: 5 }),
+  //   });
+  // }
 
-  const restaurantIds = await client.select().from(restaurants);
-  for (let i = 0; i < restaurantIds.length; i++) {
-    await client.insert(items).values({
-      name: faker.commerce.productName(),
-      restaurantId: restaurantIds[i].id,
-      description: faker.commerce.productDescription(),
-    });
-  }
+  // const restaurantIds = await client.select().from(restaurants);
+  // for (let i = 0; i < restaurantIds.length; i++) {
+  //   await client.insert(items).values({
+  //     name: faker.commerce.productName(),
+  //     restaurantId: restaurantIds[i].id,
+  //     description: faker.commerce.productDescription(),
+  //   });
+  // }
 
   const userIds = await client.select().from(users);
   for (let i = 0; i < userIds.length; i++) {

@@ -20,7 +20,7 @@ import Link from "next/link";
 type Props = {};
 
 const NavBar = (props: Props) => {
-  const [cart, setCart] = useAtom(cartAtom);
+  const [cart] = useAtom(cartAtom);
   return (
     <header className="flex items-center h-16 border-b bg-white dark:bg-gray-800">
       <div className="flex w-2/4 h-full justify-start px-10 items-center">

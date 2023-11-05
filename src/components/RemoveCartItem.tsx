@@ -5,7 +5,7 @@ import { useAtom } from "jotai";
 import { cartAtom } from "@/lib/cartAtom";
 import { MealItem } from "@/lib/types";
 
-type Props = { item: Omit<MealItem, "dateAdded"> };
+type Props = { item: Omit<MealItem, "dateAdded" | "checkoutId"> };
 
 const RemoveCartItem = ({ item }: Props) => {
   const [cart, setCart] = useAtom(cartAtom);
@@ -13,6 +13,7 @@ const RemoveCartItem = ({ item }: Props) => {
     <Button
       onClick={() => {
         const toRemoveItemIdx = cart.items.findIndex(
+          // (cartItem) => cartItem.id === item.id,
           (cartItem) => cartItem.id === item.id,
         );
         setCart((prev) => ({

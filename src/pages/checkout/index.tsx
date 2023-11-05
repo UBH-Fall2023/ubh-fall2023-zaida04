@@ -13,13 +13,13 @@ type Props = {};
 
 const index = (props: Props) => {
   const [cart, setCart] = useAtom(cartAtom);
-  useEffect(() => {
-    const item = localStorage.getItem("cart");
-    if (!item) {
-      return;
-    }
-    setCart(JSON.parse(item) as { items: Array<MealItem> });
-  }, []);
+  // useEffect(() => {
+  //   const item = localStorage.getItem("cart");
+  //   if (!item) {
+  //     return;
+  //   }
+  //   setCart(JSON.parse(item) as { items: Array<MealItem> });
+  // }, []);
 
   return (
     <div className="bg-[#FEFEFEFE] ">

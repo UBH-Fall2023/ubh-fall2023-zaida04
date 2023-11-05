@@ -24,6 +24,8 @@ import { useState } from "react";
 import { useSocket } from "@/contexts/SocketContext";
 import { useAtom } from "jotai";
 import { cartAtom } from "@/lib/cartAtom";
+import { useRouter } from "next/router";
+import { useUser } from "@/hooks/useUser";
 enum Urgency {
   HIGH = "high",
   MEDIUM = "medium",
@@ -50,7 +52,8 @@ export function Checkout() {
     schedule: "now",
     urgency: Urgency.MEDIUM,
   });
-
+  const router = useRouter();
+  const user = useUser();
   const { socket, emitEvent } = useSocket();
 
   return (
@@ -144,14 +147,38 @@ export function Checkout() {
         </div>
       </CardContent>
       <CardFooter>
-        <Button
-          onClick={() => {
-            socket.emit("order", { ...formState, ...cart });
-          }}
-          className="w-3/4 rounded-lg"
-        >
-          Place order
-        </Button>
+        <div className="flex w-full justify-around">
+          <Button
+            onClick={() => {
+              if (!user?.id) {
+                console.log("shit");
+                return;
+              }
+              console.log("going out", {
+                ...formState,
+                ...cart,
+                orderedId: user?.id,
+              });
+              socket.emit("order", {
+                ...formState,
+                ...cart,
+                orderedId: user?.id,
+              });
+            }}
+            className="w-2/5 rounded-lg"
+          >
+            Place order
+          </Button>
+          <Button
+            variant={"secondary"}
+            onClick={() => {
+              router.back();
+            }}
+            className="w-2/5 rounded-lg"
+          >
+            Order more (pls)
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

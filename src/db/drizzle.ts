@@ -30,29 +30,29 @@ export const users = pgTable("users", {
 });
 export type User = typeof users.$inferSelect;
 
-export const restaurants = pgTable("restaurants", {
-  id: id(),
-  name: text("name").notNull(),
-  stars: integer("stars"), // Assuming integer is a valid type function similar to serial or text
-});
-export type Restaurant = typeof restaurants.$inferSelect;
+// export const restaurants = pgTable("restaurants", {
+//   id: id(),
+//   name: text("name").notNull(),
+//   stars: integer("stars"), // Assuming integer is a valid type function similar to serial or text
+// });
+// export type Restaurant = typeof restaurants.$inferSelect;
 
 export const items = pgTable("items", {
   id: id(),
   name: text("name").notNull(),
   description: text("description").notNull(),
   stars: integer("stars"), // Assuming integer is a valid type function similar to serial or text
-  restaurantId: singleId("restaurantId"),
+  // restaurantId: singleId("restaurantId"),
 });
 export type Item = typeof items.$inferSelect;
-export const item_relation = relations(items, ({ one }) => {
-  return {
-    restaurant: one(restaurants, {
-      fields: [items.restaurantId],
-      references: [restaurants.id],
-    }),
-  };
-});
+// export const item_relation = relations(items, ({ one }) => {
+//   return {
+//     restaurant: one(restaurants, {
+//       fields: [items.restaurantId],
+//       references: [restaurants.id],
+//     }),
+//   };
+// });
 
 export const orders = pgTable("orders", {
   id: id(),
@@ -62,7 +62,17 @@ export const orders = pgTable("orders", {
   items: idArray("items"),
   ordererId: singleId("ordererId"),
   delivererId: uuid("delivererId"),
-  status: text("status", { enum: ['ordered', 'claimed', 'waiting', 'delivering', 'delivered', 'archived', 'cancelled']}),
+  status: text("status", {
+    enum: [
+      "ordered",
+      "claimed",
+      "waiting",
+      "delivering",
+      "delivered",
+      "archived",
+      "cancelled",
+    ],
+  }),
 });
 export type Order = typeof orders.$inferSelect;
 export const order_relation = relations(orders, ({ one }) => {
@@ -73,7 +83,7 @@ export const order_relation = relations(orders, ({ one }) => {
     }),
     deliverer: one(users, {
       fields: [orders.delivererId],
-      references: [users.id]
+      references: [users.id],
     }),
     items: one(items, {
       fields: [orders.items],
