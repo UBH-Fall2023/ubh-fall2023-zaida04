@@ -44,6 +44,7 @@ export default function Index(props: Props) {
   const [showChartCheckId, setShowCartCheckId] = useState<string | null>(null);
   const [storeQuery, setStoreQuery] = useState("");
   const [value, setValue] = React.useState("");
+  const [sliderValue, setSliderValue] = useState([33]);
   useEffect(() => {
     console.log("running");
     const itemsSorted = [...cart.items].sort(
@@ -190,10 +191,22 @@ export default function Index(props: Props) {
                   />
                 </div>
               </form>
-              <div className="w-52 flex gap-x-2  items-center justify-center">
-                <span className="">$0</span>
-                <Slider defaultValue={[33]} max={100} step={1} />{" "}
-                <span className="">$100</span>
+              <div className="w-52 flex flex-col gap-x-2  items-center justify-center ">
+                <div>
+                  <span> ${sliderValue.at(0)?.toFixed(2)}</span>
+                </div>
+                <div className="w-full flex">
+                  <span className="">$0</span>
+                  <Slider
+                    value={sliderValue}
+                    onValueChange={(v) => {
+                      setSliderValue(v);
+                    }}
+                    max={15}
+                    step={1}
+                  />
+                  <span className="">$100</span>
+                </div>
               </div>
 
               <div className="">
@@ -220,6 +233,7 @@ export default function Index(props: Props) {
                   ?.items.filter(
                     (item) => item.dishType === query.searchParams?.get("type"),
                   )
+                  .filter((i) => i.price <= (sliderValue.at(0) ?? 100))
                   .filter((item) =>
                     !searchItemsQuery
                       ? true
