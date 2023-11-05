@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { UploadButton } from "@/components/upload";
 import { UploadFileResponse } from "uploadthing/client";
 import { User } from "@clerk/nextjs/server";
+import { useUser } from "@clerk/nextjs";
 
 interface FormValues {
   message: string;
@@ -23,10 +24,13 @@ export default function ChatRoom() {
   );
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const { socket, emitEvent } = useSocket();
-  const senderId = router.query.starterId as string;
+  const { user } = useUser();
+  const senderId = user?.id ?? null;
   const receiverId = router.query.receiverId as string;
 
   const handleSendMessage = (data: FormValues) => {
+    if (!senderId) return;
+
     reset();
     setUploadedImages([]);
     return emitEvent("newMessage", {
@@ -82,7 +86,7 @@ export default function ChatRoom() {
     <div className="flex flex-col h-screen">
       <div className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <h2 className="text-xl font-bold">Chat</h2>
-        <p>You are {users.find((user) => user.id === senderId)?.firstName}</p>
+        <p>You are {user?.fullName}</p>
       </div>
       <div
         id="chat-container"

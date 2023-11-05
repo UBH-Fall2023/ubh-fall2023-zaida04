@@ -17,6 +17,7 @@ export default async function handler(
     return res.status(400).json({ error: "Missing query params" });
   }
 
+  console.log(starterId, receiverId);
   const existingMessages = await client
     .select()
     .from(messages)
