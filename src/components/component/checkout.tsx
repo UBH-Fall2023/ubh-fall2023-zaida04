@@ -20,7 +20,7 @@ import {
   Select,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSocket } from "@/contexts/SocketContext";
 import { useAtom } from "jotai";
 import { cartAtom } from "@/lib/cartAtom";
@@ -30,6 +30,7 @@ import { OrderForm, Payment, Urgency } from "@/lib/types";
 
 export function Checkout() {
   const [cart, setCard] = useAtom(cartAtom);
+
   const [formState, setFormState] = useState<OrderForm>({
     location: "",
     name: "",
@@ -40,6 +41,10 @@ export function Checkout() {
   const router = useRouter();
   const { user } = useUser();
   const { socket, emitEvent } = useSocket();
+
+  // useEffect(() => {
+  //   useInte
+  // }, [])
 
   return (
     <Card className="w-full max-w-2xl md:max-w-4xl">
@@ -134,7 +139,7 @@ export function Checkout() {
       <CardFooter>
         <div className="flex w-full justify-around ">
           <Button
-            onClick={() => {
+            onClick={async () => {
               if (!user?.id) {
                 console.log("shit");
                 return;
@@ -144,11 +149,18 @@ export function Checkout() {
                 ...cart,
                 orderedId: user?.id,
               });
-              socket.emit("order", {
-                ...formState,
-                ...cart,
-                orderedId: user?.id,
-              });
+              await socket.emitWithAck(
+                "order",
+                {
+                  ...formState,
+                  ...cart,
+                  orderedId: user?.id,
+                },
+                (amountOfClients: number) => {},
+              );
+
+              router.push("ordering");
+              console.log("acked");
             }}
             className="w-2/5 rounded-lg"
           >

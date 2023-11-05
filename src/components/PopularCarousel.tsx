@@ -1,4 +1,4 @@
-import { cn, modifyQuery, stores } from "@/lib/utils";
+import { cn, modifyQuery, popularStores } from "@/lib/utils";
 import React from "react";
 import { Button } from "./ui/button";
 
@@ -13,7 +13,7 @@ const PopularCarousel = (props: Props) => {
   const [query, setQuery] = useAtom(queryAtom);
   return (
     <div className="flex h-fit py-4 gap-x-6 overflow-x-scroll px-6 border-y-2">
-      {stores.map((store) => (
+      {popularStores.map((store) => (
         <Button
           onClick={() => {
             const firstType = store.dishTypes.at(0)?.value;

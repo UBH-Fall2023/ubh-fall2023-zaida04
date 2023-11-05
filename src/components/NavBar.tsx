@@ -1,6 +1,6 @@
 import { ChefHat, ShoppingCart } from "lucide-react";
 import router from "next/router";
-import React from "react";
+import React, { useContext } from "react";
 import {
   AlertDialogHeader,
   AlertDialogFooter,
@@ -17,10 +17,14 @@ import { useAtom } from "jotai";
 import { cartAtom } from "@/lib/cartAtom";
 import Link from "next/link";
 
+import { Role, RoleProvider } from "@/contexts/RoleProvider";
+import { Switch } from "./ui/switch";
+
 type Props = {};
 
 const NavBar = (props: Props) => {
   const [cart] = useAtom(cartAtom);
+  const { role, setRole } = useContext(RoleProvider);
   return (
     <header className="flex items-center h-16 border-b bg-white dark:bg-gray-800">
       <div className="flex w-2/4 h-full justify-start px-10 items-center">
@@ -68,6 +72,19 @@ const NavBar = (props: Props) => {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+
+        <Switch
+          className="ml-4"
+          value={role}
+          onChange={() => {
+            if (Role.CLIENT) {
+              setRole(Role.WALKER);
+            } else {
+              setRole(Role.CLIENT);
+            }
+          }}
+        />
+
         {/* </Button> */}
       </div>
     </header>

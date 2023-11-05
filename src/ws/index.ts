@@ -53,6 +53,7 @@ io.on("connection", (socket: Socket) => {
 
   socket.on("joinWalkers", () => {
     socket.join("walkers");
+    io.in;
   });
 
   socket.on("joinRoom", (meId: string) => {
@@ -83,6 +84,7 @@ io.on("connection", (socket: Socket) => {
     "order",
     async (
       order: OrderForm & { items: Array<MealItem> } & { orderedId: string },
+      ack,
     ) => {
       const checkoutItems: Array<Item> = order.items.map((item) => ({
         stars: item.rating,
@@ -107,9 +109,17 @@ io.on("connection", (socket: Socket) => {
         ordererId: order.orderedId,
       });
 
+      console.log("added order!");
+      //
+
       io.in("walkers").emit("order", order);
+      ack();
     },
   );
+
+  socket.on("connected-count", (ack) => {
+    ack([...io.sockets.adapter.rooms.values()].length);
+  });
 
   socket.on("disconnect", () => {
     console.log("user disconnected");

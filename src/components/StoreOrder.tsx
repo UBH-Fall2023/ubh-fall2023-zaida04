@@ -1,4 +1,4 @@
-import { cn, stores, modifyQuery, run } from "@/lib/utils";
+import { cn, popularStores, modifyQuery, run } from "@/lib/utils";
 import { query } from "express";
 
 import React, { useState } from "react";
@@ -28,7 +28,7 @@ const StoreOrder = (props: Props) => {
       <div className="w-48 border-r-2 h-full p-2 flex flex-col items-center gap-y-2">
         <Input className="pl-8" placeholder="Search menu..." type="search" />
 
-        {stores
+        {popularStores
           .find((store) => store.id === query.searchParams?.get("store"))
           ?.dishTypes.map((item) => (
             <Button
@@ -63,7 +63,7 @@ const StoreOrder = (props: Props) => {
             if (item) {
               return <></>;
             }
-            return stores
+            return popularStores
               .find((store) => store.id == query.searchParams?.get("store"))
               ?.items.filter(
                 (item) => item.dishType === query.searchParams?.get("type"),

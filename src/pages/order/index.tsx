@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Combobox } from "@/components/filters/ComboBox";
-import { cn, modifyQuery, run, stores } from "@/lib/utils";
+import { cn, modifyQuery, run, popularStores } from "@/lib/utils";
 import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import { atomWithLocation } from "jotai-location";
@@ -120,7 +120,7 @@ const index = (props: Props) => {
               type="search"
             />
 
-            {stores
+            {popularStores
               .find((store) => store.id === query.searchParams?.get("store"))
               ?.dishTypes.map((item) => (
                 <Button
@@ -189,7 +189,7 @@ const index = (props: Props) => {
                 if (item) {
                   return <></>;
                 }
-                return stores
+                return popularStores
                   .find((store) => store.id == query.searchParams?.get("store"))
                   ?.items.filter(
                     (item) => item.dishType === query.searchParams?.get("type"),
