@@ -147,6 +147,10 @@ io.on("connection", (socket: Socket) => {
           orderTotal,
           tips: "123",
           status: "ordered",
+          paymentType: order.paymentType,
+          urgency: order.urgency,
+          schedule: order.schedule,
+          location: order.location,
           items: itemEntries.map((entry) => entry.id),
           ordererId: order.orderedId,
         })
