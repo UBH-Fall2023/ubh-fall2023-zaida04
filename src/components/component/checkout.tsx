@@ -76,12 +76,15 @@ export function Checkout() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="tips">Tips/Bid</Label>
+          <Label htmlFor="tips">Tips</Label>
           <Input
             value={formState.tips}
             type="number"
             onChange={(e) =>
-              setFormState((prev) => ({ ...prev, tips: parseFloat(e.target.value) }))
+              setFormState((prev) => ({
+                ...prev,
+                tips: parseFloat(e.target.value),
+              }))
             }
             id="tips"
             placeholder="Enter a tip/bid amount"
