@@ -36,7 +36,18 @@ export default function (props: Props) {
     );
   }, [socket]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (!orderId) return;
+
+    async function fetchOrder() {
+      const res = await fetch(`/api/orders/${orderId}`);
+      const { delivererId, status } = await res.json();
+      setStatus(status);
+      setDelivererId(delivererId);
+    }
+
+    fetchOrder();
+  }, [orderId]);
 
   return (
     <div className="h-screen w-screen  flex flex-col items-center justify-center">
