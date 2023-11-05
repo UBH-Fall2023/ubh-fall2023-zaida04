@@ -14,6 +14,7 @@ export type MealItem = {
 export type OrderForm = {
   name: string;
   location: string;
+  tips: number;
   paymentType: Payment;
   urgency: Urgency;
   schedule: string;

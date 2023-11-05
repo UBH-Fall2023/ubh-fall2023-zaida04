@@ -58,24 +58,24 @@ const data: EventData[] = [
   {
     date: "2023-01-01",
     title: "Ordered",
-    description: "You're ordered is placed and is awaiting confirmation",
+    description: "Your order is placed and is awaiting confirmation",
   },
   {
     date: "2023-02-14",
     title: "Claimed",
     description:
-      "Your order has been accepted, your deliverer is b-lining to get your food!",
+      "Your order has been accepted, your deliverer is bee-lining to get your food!",
   },
   {
     date: "2023-03-30",
-    title: "picked-up",
-    description: "Your order is on its way!",
+    title: "Picked Up",
+    description: "Sit tight, your order is on its way!",
   },
 
   {
     date: "2023-05-10",
     title: "Delivered",
-    description: "Get your food man!",
+    description: "Enjoy your food!",
   },
 ];
 
@@ -97,9 +97,7 @@ function Timeline({ status }: { status: ThingaMajig }) {
 
   return (
     <div
-      className={`
-
-    max-w-4xl border-2 w-1/2 mx-auto py-8 border-b-0 rounded-b-none p-4 border-primary rounded-md`}
+      className={`max-w-4xl border-2 w-1/2 mx-auto py-8 border-b-0 rounded-b-none p-4 border-primary rounded-md`}
     >
       <h1 className="text-3xl font-bold mb-8">Timeline</h1>
       <div className="mt-8">

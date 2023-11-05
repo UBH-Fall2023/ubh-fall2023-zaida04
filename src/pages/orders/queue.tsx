@@ -18,6 +18,7 @@ import { useJoinWalkers } from "@/hooks/useJoinWalkers";
 import { useSocket } from "@/contexts/SocketContext";
 import { useUser } from "@clerk/nextjs";
 import { Order } from "@/db/drizzle";
+import { formatDistance } from 'date-fns';
 
 type Props = {};
 
@@ -29,13 +30,29 @@ export default function QueuePage(props: Props) {
   const { user } = useUser();
   const delivererId = user?.id ?? null;
 
+  // const date = new Date(orders[0].createdAt!);
+  // const timePassed = formatDistance(date, new Date(), { addSuffix: true });
+
   // useJoinWalkers();
 
   useEffect(() => {
     async function fetchOrder() {
       const res = await fetch("/api/orders");
       const data = await res.json();
-      setOrders(data.data);
+
+      const mutatedData = await Promise.all(data.data.map(async (placedOrder: any) => {
+        const oneItem = placedOrder.items[0]
+        const itemData = await fetch(`/api/restaurant/${oneItem}`)
+        const dewrappedData = await itemData.json();
+        const restaurantName = dewrappedData.data.restaurantName || null;
+
+        return {
+          ...placedOrder,
+          restaurantName: restaurantName
+        }
+      }))
+
+      setOrders(mutatedData);
     }
 
     fetchOrder();
@@ -79,7 +96,7 @@ export default function QueuePage(props: Props) {
         <Button disabled={selectedOrders.length === 0} onClick={claimOrder}>
           I'm Ready
         </Button>
-        <div className={`h-4/6 mt-3 w-5/6`}>
+        <div className={`h-4/6 mt-3 w-5/6 ` + (orders.length === 0 ? 'text-center mt-4' : '')}>
           {/* {query.isLoading && <h1>Loading...</h1>} */}
           {/* {query.isError && (
             <h1>Oops! An error occured, please try refreshing the page.</h1>
@@ -93,12 +110,11 @@ export default function QueuePage(props: Props) {
                   <TableHead className="w-[120px]">Restaurant</TableHead>
                   <TableHead>Order Total</TableHead>
                   <TableHead>Tip</TableHead>
-                  <TableHead className="w-[150px]">Delivery Location</TableHead>
                   <TableHead>Time Elapsed</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {orders.map((orderInfo: Order) => {
+                {orders.map((orderInfo: any) => {
                   return (
                     <TableRow key={orderInfo.id}>
                       <TableCell className="font-medium">
@@ -112,17 +128,19 @@ export default function QueuePage(props: Props) {
                           <p>Claim</p>
                         </div>
                       </TableCell>
-                      <TableCell>Tim Hortons</TableCell>
+                      <TableCell>{`${orderInfo.restaurantName}`}</TableCell>
                       <TableCell>{`$${orderInfo.orderTotal}`}</TableCell>
                       <TableCell>{`$${orderInfo.tips}`}</TableCell>
-                      <TableCell>5 minutes away</TableCell>
-                      <TableCell>3m 7s</TableCell>
+                      <TableCell>{formatDistance(new Date(orderInfo.createdAt), new Date())}</TableCell>
                     </TableRow>
                   );
                 })}
               </TableBody>
             </Table>
-          ) : (
+          ) :
+          orders.length === 0
+          ? (<span>There's currently no orders in the queue!</span>)
+          : (
             <span>Loading...</span>
           )}
         </div>

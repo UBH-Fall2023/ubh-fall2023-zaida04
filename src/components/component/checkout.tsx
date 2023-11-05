@@ -36,6 +36,7 @@ export function Checkout() {
   const [formState, setFormState] = useState<OrderForm>({
     location: "",
     name: "",
+    tips: 0,
     paymentType: Payment.VENMO,
     schedule: "now",
     urgency: Urgency.MEDIUM,
@@ -44,10 +45,6 @@ export function Checkout() {
   const router = useRouter();
   const { user } = useUser();
   const { socket, emitEvent } = useSocket();
-
-  // useEffect(() => {
-  //   useInte
-  // }, [])
 
   return (
     <Card className="w-full max-w-2xl md:max-w-4xl">
@@ -76,6 +73,18 @@ export function Checkout() {
             }
             id="location"
             placeholder="Enter your location"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="tips">Tips/Bid</Label>
+          <Input
+            value={formState.tips}
+            type="number"
+            onChange={(e) =>
+              setFormState((prev) => ({ ...prev, tips: parseFloat(e.target.value) }))
+            }
+            id="tips"
+            placeholder="Enter a tip/bid amount"
           />
         </div>
         <div className="space-y-2">

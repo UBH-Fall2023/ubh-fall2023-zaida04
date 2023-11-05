@@ -33,6 +33,7 @@ type MealItem = {
 type OrderForm = {
   name: string;
   location: string;
+  tips: number;
   paymentType: Payment;
   urgency: Urgency;
   schedule: string;
@@ -166,11 +167,12 @@ io.on("connection", (socket: Socket) => {
         .values(checkoutItems)
         .returning();
 
+        order.tips
       const createdOrder = await client
         .insert(orders)
         .values({
           orderTotal,
-          tips: "123",
+          tips: order.tips.toString(),
           status: "ordered",
           paymentType: order.paymentType,
           urgency: order.urgency,
