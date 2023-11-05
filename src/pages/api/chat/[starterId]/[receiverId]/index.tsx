@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { makeDB } from "@/db/client";
-import { messages, users } from "@/db/drizzle";
+import { messages } from "@/db/drizzle";
 import { and, eq, or } from "drizzle-orm";
+import { clerkClient } from "@clerk/nextjs";
 
 export default async function handler(
   req: NextApiRequest,
@@ -29,10 +30,9 @@ export default async function handler(
       ),
     );
 
-  const fetchedUsers = await client
-    .select()
-    .from(users)
-    .where(or(eq(users.id, starterId), eq(users.id, receiverId)));
-
+  const users = await clerkClient.users.getUserList();
+  const fetchedUsers = await users.filter((user) => {
+    return user.id === starterId || user.id === receiverId;
+  });
   return res.json({ messages: existingMessages, users: fetchedUsers });
 }

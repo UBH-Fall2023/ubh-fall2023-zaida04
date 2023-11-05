@@ -1,26 +1,26 @@
 import "dotenv/config";
 import { makeDB } from "../db/client";
-import { items, messages, users } from "./drizzle";
-import { faker } from "@faker-js/faker";
+// import { items, messages, users } from "./drizzle";
+// import { faker } from "@faker-js/faker";
 
 const { client, db } = makeDB(process.env.DATABASE_URL!);
 
 async function main() {
-  await client.insert(users).values({
-    email: "nico.03727@gmail.com",
-    firstName: "Zaid",
-    lastName: "Arshad",
-    password: "IAMAPASSWORD",
-  });
+  // await client.insert(users).values({
+  //   email: "nico.03727@gmail.com",
+  //   firstName: "Zaid",
+  //   lastName: "Arshad",
+  //   password: "IAMAPASSWORD",
+  // });
 
-  for (let i = 0; i < 10; i++) {
-    await client.insert(users).values({
-      email: faker.internet.email(),
-      firstName: faker.person.firstName(),
-      lastName: faker.person.lastName(),
-      password: faker.internet.password(),
-    });
-  }
+  // for (let i = 0; i < 10; i++) {
+  //   await client.insert(users).values({
+  //     email: faker.internet.email(),
+  //     firstName: faker.person.firstName(),
+  //     lastName: faker.person.lastName(),
+  //     password: faker.internet.password(),
+  //   });
+  // }
 
   // for (let i = 0; i < 10; i++) {
   //   await client.insert(restaurants).values({
@@ -38,14 +38,14 @@ async function main() {
   //   });
   // }
 
-  const userIds = await client.select().from(users);
-  for (let i = 0; i < userIds.length; i++) {
-    await client.insert(messages).values({
-      content: faker.lorem.sentence(),
-      senderId: userIds[i].id,
-      receiverId: randomElement(userIds).id,
-    });
-  }
+  // const userIds = await client.select().from(users);
+  // for (let i = 0; i < userIds.length; i++) {
+  //   await client.insert(messages).values({
+  //     content: faker.lorem.sentence(),
+  //     senderId: userIds[i].id,
+  //     receiverId: randomElement(userIds).id,
+  //   });
+  // }
 
   db.end();
 }

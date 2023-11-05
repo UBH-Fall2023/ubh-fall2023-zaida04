@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { useUser } from "./useUser";
 import { useSocket } from "@/contexts/SocketContext";
+import { useUser } from "@clerk/nextjs";
 
 export const useJoinWalkers = () => {
-  const user = useUser();
+  const { user } = useUser();
   const { socket } = useSocket();
 
   useEffect(() => {

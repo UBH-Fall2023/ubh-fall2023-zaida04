@@ -25,7 +25,7 @@ import { useSocket } from "@/contexts/SocketContext";
 import { useAtom } from "jotai";
 import { cartAtom } from "@/lib/cartAtom";
 import { useRouter } from "next/router";
-import { useUser } from "@/hooks/useUser";
+import { useUser } from "@clerk/nextjs";
 enum Urgency {
   HIGH = "high",
   MEDIUM = "medium",
@@ -53,7 +53,7 @@ export function Checkout() {
     urgency: Urgency.MEDIUM,
   });
   const router = useRouter();
-  const user = useUser();
+  const { user } = useUser();
   const { socket, emitEvent } = useSocket();
 
   return (

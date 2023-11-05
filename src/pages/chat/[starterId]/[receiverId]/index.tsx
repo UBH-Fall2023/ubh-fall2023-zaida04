@@ -2,13 +2,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAtom } from "jotai";
 import { messageAtoms } from "@/lib/state";
-import { Message, User } from "@/db/drizzle";
+import { Message } from "@/db/drizzle";
 import { useSocket } from "@/contexts/SocketContext";
 import { useEffect, useState } from "react";
 import { set, useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { UploadButton } from "@/components/upload";
 import { UploadFileResponse } from "uploadthing/client";
+import { User } from "@clerk/nextjs/server";
 
 interface FormValues {
   message: string;

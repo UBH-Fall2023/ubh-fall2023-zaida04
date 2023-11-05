@@ -13,22 +13,22 @@ const id = (name?: string) =>
     .primaryKey()
     .defaultRandom();
 
-const singleId = (name: string) => uuid(name).notNull();
+const singleId = (name: string) => text(name).notNull();
 
-const idArray = (name: string) => uuid(name).array().notNull();
+const idArray = (name: string) => text(name).array().notNull();
 
-export const users = pgTable("users", {
-  id: id(),
-  firstName: text("firstName").notNull(),
-  lastName: text("lastName").notNull(),
-  email: text("email").notNull(),
-  password: text("password"), // nullable since it's suffixed with a question mark
-  oauthProvider: text("oauthProvider"), // nullable
-  oauthId: text("oauthId"), // nullable
-  oauthAccessToken: text("oauthAccessToken"), // nullable
-  oauthRefreshToken: text("oauthRefreshToken"), // nullable
-});
-export type User = typeof users.$inferSelect;
+// export const users = pgTable("users", {
+//   id: text("id").primaryKey(),
+//   firstName: text("firstName").notNull(),
+//   lastName: text("lastName").notNull(),
+//   email: text("email").notNull(),
+//   password: text("password"), // nullable since it's suffixed with a question mark
+//   oauthProvider: text("oauthProvider"), // nullable
+//   oauthId: text("oauthId"), // nullable
+//   oauthAccessToken: text("oauthAccessToken"), // nullable
+//   oauthRefreshToken: text("oauthRefreshToken"), // nullable
+// });
+// export type User = typeof users.$inferSelect;
 
 // export const restaurants = pgTable("restaurants", {
 //   id: id(),
@@ -77,14 +77,14 @@ export const orders = pgTable("orders", {
 export type Order = typeof orders.$inferSelect;
 export const order_relation = relations(orders, ({ one }) => {
   return {
-    orderer: one(users, {
-      fields: [orders.ordererId],
-      references: [users.id],
-    }),
-    deliverer: one(users, {
-      fields: [orders.delivererId],
-      references: [users.id],
-    }),
+    // orderer: one(users, {
+    //   fields: [orders.ordererId],
+    //   references: [users.id],
+    // }),
+    // deliverer: one(users, {
+    //   fields: [orders.delivererId],
+    //   references: [users.id],
+    // }),
     items: one(items, {
       fields: [orders.items],
       references: [items.id],
@@ -104,14 +104,14 @@ export const messages = pgTable("messages", {
 export type Message = typeof messages.$inferSelect;
 export const message_relation = relations(messages, ({ one }) => {
   return {
-    sender: one(users, {
-      fields: [messages.senderId],
-      references: [users.id],
-    }),
-    receiver: one(users, {
-      fields: [messages.receiverId],
-      references: [users.id],
-    }),
+    // sender: one(users, {
+    //   fields: [messages.senderId],
+    //   references: [users.id],
+    // }),
+    // receiver: one(users, {
+    //   fields: [messages.receiverId],
+    //   references: [users.id],
+    // }),
     // room: one(rooms, {
     //   fields: [messages.roomId],
     //   references: [rooms.id],
