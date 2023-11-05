@@ -25,7 +25,7 @@ export default function Component() {
               />
             }
             <PathCard
-              href="/delivery"
+              href="/orders"
               icon={<MemoDeliveryIcon />}
               title="Earn Money"
               description="Make some money in between classes by becoming a delivery driver for us. It's easy and flexible."
