@@ -116,6 +116,9 @@ dependencies:
   ts-pattern:
     specifier: ^5.0.5
     version: 5.0.5
+  tslib:
+    specifier: ^2.6.2
+    version: 2.6.2
   tsx:
     specifier: ^3.14.0
     version: 3.14.0
@@ -134,7 +137,7 @@ devDependencies:
     specifier: ^4.17.17
     version: 4.17.20
   '@types/node':
-    specifier: ^20
+    specifier: ^20.0.0
     version: 20.0.0
   '@types/react':
     specifier: ^18

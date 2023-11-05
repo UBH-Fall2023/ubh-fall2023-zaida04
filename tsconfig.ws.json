@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "alwaysStrict": true,
+    "declaration": false,
+    "importHelpers": true,
+    "incremental": true,
+    "noEmitHelpers": true,
+    "moduleResolution": "Node",
+    "lib": ["esnext", "dom"],
+    "types": ["node"],
+    "target": "ESNext",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "inlineSources": true,
+    "sourceRoot": "/",
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "paths": {
+      "@/db/*": ["./src/db/*"]
+    },
+    "typeRoots": ["./node_modules/@types"]
+  },
+  "include": ["./src/ws/index.ts"]
+}
