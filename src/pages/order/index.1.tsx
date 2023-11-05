@@ -3,39 +3,18 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Combobox } from "@/components/filters/ComboBox";
 import { cn, modifyQuery, run, popularStores } from "@/lib/utils";
-import { useRouter } from "next/router";
 import { useAtom } from "jotai";
-import { atomWithLocation } from "jotai-location";
 import Image from "next/image";
 import { cartAtom } from "@/lib/cartAtom";
 import { Slider } from "@/components/ui/slider";
 import NavBar from "@/components/NavBar";
 import Stars from "@/components/Stars";
-
-import { MealItem } from "@/lib/types";
 import RemoveCartItem from "@/components/RemoveCartItem";
 import PopularCarousel from "@/components/PopularCarousel";
 import { queryAtom } from "@/lib/queryAtom";
 import CloseToMeCarousel from "@/components/CloseToMeCarousel";
 import { XCircle } from "lucide-react";
-import ReverseOrder from "@/components/ReverseOrder";
-
-type Props = {};
-
-// const categories = {
-//   "Speed ⚡": "speed",
-// }
-const categories = ["Speed 🏃‍♂️", "Most Popular 🎉", "On A Budget 🤑"];
-
-type Store = {
-  src: string;
-  id: string;
-  label: string;
-  description: string;
-  dishTypes: Array<{ value: string; emoji: string }>;
-  items: Array<Omit<MealItem, "dateAdded" | "checkoutId">>;
-  meta?: any;
-};
+import { Props } from ".";
 
 export default function Index(props: Props) {
   const [query, setQuery] = useAtom(queryAtom);
@@ -63,7 +42,6 @@ export default function Index(props: Props) {
   // useEffect(() => {
   //   localStorage.setItem("cart", '{"items":""}');
   // }, []);
-
   const [filledStars, setFilledStars] = useState<Array<boolean>>([
     true,
     true,
@@ -73,7 +51,6 @@ export default function Index(props: Props) {
   ]);
   // console.log(query, router);
   // const query = router.query as { store: string | null };
-
   return (
     <>
       <div className="flex flex-col h-screen bg-secondary">
