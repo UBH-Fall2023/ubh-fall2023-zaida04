@@ -63,12 +63,12 @@ io.on("connection", (socket: Socket) => {
     orderId.forEach(async (orderId: string) => {
       const order = await client.query.orders
         .findFirst({
-          where: eq(orders.id, orderId[0]),
+          where: eq(orders.id, orderId),
         })
         .execute();
 
       if (!order) return;
-
+      // console.log(order, orderId, delivererId);
       await client
         .update(orders)
         .set({
@@ -82,15 +82,13 @@ io.on("connection", (socket: Socket) => {
   });
 
   socket.on("updateOrderStatus", async (orderId: string, status: any) => {
-    const userId: { ordererId: string }[] = await client
+    const userId = await client
       .update(orders)
       .set({
         status,
       })
       .where(eq(orders.id, orderId))
-      .returning({ ordererId: orders.id });
-
-    if (!userId) return;
+      .returning();
 
     io.in(userId[0].ordererId).emit("orderUpdate", "picked-up");
   });
