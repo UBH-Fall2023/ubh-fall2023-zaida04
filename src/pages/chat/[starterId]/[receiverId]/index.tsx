@@ -28,6 +28,8 @@ export default function ChatRoom() {
   const senderId = user?.id ?? null;
   const receiverId = router.query.receiverId as string;
 
+  console.log(receiverId);
+
   const handleSendMessage = (data: FormValues) => {
     if (!senderId) return;
 

@@ -1,5 +1,8 @@
 import Timeline, { ThingaMajig } from "@/components/TimeLine";
+import { Button } from "@/components/ui/button";
 import { useSocket } from "@/contexts/SocketContext";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 type Props = {};
@@ -7,16 +10,45 @@ type Props = {};
 export default function (props: Props) {
   const { socket } = useSocket();
   const [status, setStatus] = useState<ThingaMajig>("ordered");
+  const router = useRouter();
+  const { user } = useUser();
+  const [delivererId, setDelivererId] = useState<null | string>(null);
+  const senderId = user?.id ?? null;
+  const receiverId = router.query.receiverId as string;
   useEffect(() => {
     if (!socket) return;
-    socket.on("orderUpdate", (status: ThingaMajig) => {
-      setStatus(status);
-    });
+    socket.on(
+      "orderUpdate",
+      ({
+        delivererId,
+        status,
+      }: {
+        status: ThingaMajig;
+        delivererId: string;
+      }) => {
+        console.log({ delivererId });
+        if (delivererId) {
+          setDelivererId(delivererId);
+          // router.push(`?starterId=${user.id}&receiverId=${delivererId}`);
+        }
+
+        setStatus(status);
+      },
+    );
   }, [socket]);
+
   return (
-    <div className="h-screen w-screen  flex items-center justify-center">
+    <div className="h-screen w-screen  flex flex-col items-center justify-center">
       <Timeline status={status ?? "ordered"} />
-      <div className="flex flex-col"></div>
+      <Button
+        onClick={() => {
+          if (!user || !delivererId) return;
+          router.push(`/chat/${user.id}/${delivererId}`);
+        }}
+        className="w-1/2 rounded-t-none"
+      >
+        Chat with deliverer 💬
+      </Button>
     </div>
   );
 }

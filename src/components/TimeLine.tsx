@@ -62,20 +62,16 @@ const data: EventData[] = [
   },
   {
     date: "2023-02-14",
-    title: "Accepted",
+    title: "Claimed",
     description:
-      "Your order has been accepted, your food will be with you at last soon!",
+      "Your order has been accepted, your deliverer is b-lining to get your food!",
   },
   {
     date: "2023-03-30",
-    title: "Waiting",
-    description: "Your deliverer is doing the dirty work and waiting on a line",
+    title: "picked-up",
+    description: "Your order is on its way!",
   },
-  {
-    date: "2023-04-20",
-    title: "Delivering",
-    description: "Deliverer is on your way!",
-  },
+
   {
     date: "2023-05-10",
     title: "Delivered",
@@ -84,10 +80,9 @@ const data: EventData[] = [
 ];
 
 const statusRanking = {
-  ordered: 1,
-  accepted: 2,
-  waiting: 3,
-  delivering: 4,
+  ordered: 0,
+  claimed: 1,
+  "picked-up": 2,
   delivered: 5,
 };
 
@@ -96,12 +91,12 @@ export type ThingaMajig = keyof typeof statusRanking;
 function Timeline({ status }: { status: ThingaMajig }) {
   const getWhatShouldBeColored = () => {
     const totalOrdering = statusRanking[status];
-
+    console.log(totalOrdering, status);
     return Object.values(statusRanking).map((num) => num <= totalOrdering);
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-8">
+    <div className="max-w-4xl border-2 w-1/2 mx-auto py-8 border-b-none rounded-b-none p-4 border-primary rounded-md">
       <h1 className="text-3xl font-bold mb-8">Timeline</h1>
       <div className="mt-8">
         {data.map((event, idx) => (

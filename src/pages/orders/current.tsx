@@ -26,12 +26,19 @@ export default function OrderIndexPage() {
   const delivererId = user?.id ?? null;
 
   const sendStatusUpdate = (orderId: string, statusUpdate: number) => {
+    console.log("hate all", statusUpdate);
     if (statusUpdate === 0) {
-      socket.emit("updateOrderStatus", orderId, "picked-up");
+      socket.emit("updateOrderStatus", orderId, {
+        status: "picked-up",
+        delivererId,
+      });
     }
 
     if (statusUpdate === 1) {
-      socket.emit("updateOrderStatus", orderId, "delivered");
+      socket.emit("updateOrderStatus", orderId, {
+        status: "delivered",
+        delivererId,
+      });
     }
   };
 

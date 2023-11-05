@@ -80,23 +80,31 @@ io.on("connection", (socket: Socket) => {
     });
   });
 
-  socket.on("updateOrderStatus", async (orderId: string, status: string) => {
-    const userId = await client
-      .update(orders)
-      .set({
-        status: status as any,
-      })
-      .where(eq(orders.id, orderId))
-      .returning();
+  socket.on(
+    "updateOrderStatus",
+    async (orderId: string, info: { status: string; delivererId: string }) => {
+      const userId = await client
+        .update(orders)
+        .set({
+          status: status as any,
+        })
+        .where(eq(orders.id, orderId))
+        .returning();
 
-    if (status === 'picked-up') {
-      setTimeout(() => {
-        io.in(userId[0].ordererId!).emit("orderUpdate", 'delivering');
-      }, (Math.random() * (20 - 5) + 5) * 1000)
-    }
+      // if (info.status === "picked-up") {
+      //   setTimeout(
+      //     () => {
+      //       io.in(userId[0].ordererId!).emit("orderUpdate", {
+      //         status: "delivering",
+      //       });
+      //     },
+      //     (Math.random() * (20 - 5) + 5) * 1000,
+      //   );
+      // }
 
-    io.in(userId[0].ordererId!).emit("orderUpdate", status);
-  });
+      io.in(userId[0].ordererId!).emit("orderUpdate", info);
+    },
+  );
 
   socket.on("joinRoom", (meId: string) => {
     socket.join(meId);
