@@ -73,6 +73,7 @@ export default function OrderIndexPage() {
         ) : (
           currentOrders.map((order) => {
             const currentUser = users.find((x) => x.id === order.ordererId);
+            console.log(order)
 
             return (
               <Delivery
@@ -84,6 +85,8 @@ export default function OrderIndexPage() {
                 items={order.items}
                 location={order.location!}
                 sendStatusUpdate={sendStatusUpdate}
+                orderTotal={order.orderTotal}
+                tips={order.tips}
               />
             );
           })
@@ -103,6 +106,8 @@ function Delivery(props: {
   ordererId: string;
   location: string;
   sendStatusUpdate: any;
+  orderTotal: string;
+  tips: string;
 }) {
   const router = useRouter();
   const { user } = useUser();
@@ -132,8 +137,12 @@ function Delivery(props: {
           <span className="font-bold">Location: </span>
           <span>{props.location}</span>
         </div>
+        <div>
+          <span className="font-bold">Total: </span>
+          <span>{(parseFloat(props.orderTotal) + parseFloat(props.tips)).toFixed(2)}</span>
+        </div>
       </CardContent>
-      <CardFooter className="flex flex-row justify-evenly w-full  p-0 py-2 items-center">
+      <CardFooter className="flex flex-row justify-evenly w-full px-3 py-2 items-center gap-2">
         <Button
           variant="outline"
           onClick={() => props.sendStatusUpdate(props.id, 0)}

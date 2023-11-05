@@ -85,7 +85,7 @@ export const popularStores: Array<Store> = [
       },
       {
         dishType: "meals",
-        name: "Breakfeast sandwhich",
+        name: "Breakfast sandwich",
         src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROYC_q2jyEbIjRWgLTWQhy0nrkMB1hUWdqcQ&usqp=CAU",
         description: "mmmhmm yummy",
         price: 4.11,

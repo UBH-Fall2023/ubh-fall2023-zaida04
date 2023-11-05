@@ -15,7 +15,7 @@ const PopularCarousel = ({ storeQuery }: Props) => {
   const [query, setQuery] = useAtom(queryAtom);
   return (
     <div className="bg-primary/10">
-      <h1 className="text-4xl">Popular stores</h1>
+      <h1 className="text-3xl pl-3 font-bold italic">POPULAR STORES</h1>
       <div className="flex h-fit py-4 gap-x-6 overflow-x-auto overflow-y-auto px-6 border-y-2 bg-primary/10 border-white">
         {popularStores
           .filter((s) =>
