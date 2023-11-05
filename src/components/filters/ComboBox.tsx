@@ -20,6 +20,10 @@ import {
 
 const frameworks = [
   {
+    value: "",
+    label: "Select",
+  },
+  {
     value: "speed",
     label: "Speed 🏃‍♂️",
   },
@@ -33,9 +37,14 @@ const frameworks = [
   },
 ];
 
-export function Combobox() {
+export function Combobox({
+  setValue,
+  value,
+}: {
+  value: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
+}) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

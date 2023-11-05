@@ -42,7 +42,8 @@ export default function Index(props: Props) {
   const [cart, setCart] = useAtom(cartAtom);
   const [searchItemsQuery, setSearchItemsQuery] = useState<string | null>(null);
   const [showChartCheckId, setShowCartCheckId] = useState<string | null>(null);
-
+  const [storeQuery, setStoreQuery] = useState("");
+  const [value, setValue] = React.useState("");
   useEffect(() => {
     console.log("running");
     const itemsSorted = [...cart.items].sort(
@@ -60,10 +61,6 @@ export default function Index(props: Props) {
     }, 1750);
   }, [cart]);
 
-  // useEffect(() => {
-  //   localStorage.setItem("cart", '{"items":""}');
-  // }, []);
-
   const [filledStars, setFilledStars] = useState<Array<boolean>>([
     true,
     true,
@@ -73,7 +70,7 @@ export default function Index(props: Props) {
   ]);
   // console.log(query, router);
   // const query = router.query as { store: string | null };
-
+  console.log({ value });
   return (
     <>
       <div className="flex flex-col h-screen bg-secondary">
@@ -98,6 +95,8 @@ export default function Index(props: Props) {
                 <path d="m21 21-4.3-4.3" />
               </svg>
               <Input
+                value={storeQuery}
+                onChange={(e) => setStoreQuery(e.target.value)}
                 className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
                 placeholder="Search Stores..."
                 type="search"
@@ -105,12 +104,14 @@ export default function Index(props: Props) {
             </div>
           </form>
 
-          <Combobox />
+          <Combobox value={value} setValue={setValue} />
         </div>
-
-        <PopularCarousel />
-        <CloseToMeCarousel />
-        <ReverseOrder />
+        {value === "most-popular" ||
+          (value === "" && <PopularCarousel storeQuery={storeQuery} />)}
+        {value === "speed" ||
+          (value === "" && <CloseToMeCarousel storeQuery={storeQuery} />)}
+        {value === "budget" ||
+          (value === "" && <ReverseOrder storeQuery={storeQuery} />)}
 
         <div
           className={cn([
