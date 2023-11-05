@@ -30,7 +30,7 @@ const NavBar = (props: Props) => {
       <div className="flex w-2/4 h-full justify-start px-10 items-center">
         <Link
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
-          href="#"
+          href="/"
         >
           <ChefHat />
         </Link>

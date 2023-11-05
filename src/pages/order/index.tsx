@@ -189,7 +189,7 @@ export default function Index(props: Props) {
                 <span className="">$100</span>
               </div>
             </div>
-            <div className="flex w-full p-4 gap-x-5 overflow-y-scroll h-full ">
+            <div className="flex w-full p-9 gap-9 overflow-y-scroll h-full flex-wrap ">
               {run(() => {
                 const item = query?.searchParams?.get("item");
                 if (item) {
@@ -210,10 +210,10 @@ export default function Index(props: Props) {
                         item.name.toLowerCase().includes(searchItemsQuery),
                   )
                   .map((item) => (
-                    <div className="h-64 w-64 flex flex-col justify-between px-0 py-0 border rounded-md">
+                    <div className="h-72 w-64 flex flex-col justify-between px-0 py-0 border rounded-md">
                       {item.src && (
                         <Image
-                          className="rounded-lg  w-full  object-fill mb-auto "
+                          className="rounded-lg  w-full  object-fill mb-auto max-h-[20rem]"
                           alt={item.name}
                           width="200"
                           height="200"
@@ -224,7 +224,7 @@ export default function Index(props: Props) {
                         {item.description}
                       </div>
                       <div className="w-full flex items-center justify-between p-2 h-12">
-                        <span>$100.00</span>
+                        <span>${item.price}</span>
                         {cart.items.filter(
                           (cartItem) => cartItem.id === item.id,
                         ).length !== 0 && <RemoveCartItem item={item} />}

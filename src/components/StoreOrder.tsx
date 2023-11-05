@@ -53,7 +53,7 @@ const StoreOrder = (props: Props) => {
       <div className=" flex flex-col  w-full ">
         <div className="h-16 border-b flex items-center px-5">
           <div className="flex items-center justify-start">
-            <span className="font-semibold">Min Rating</span>
+            <span className="font-semibold"> g</span>
             <Stars setStarFill={setFilledStars} starFill={filledStars} />
           </div>
         </div>
@@ -83,7 +83,7 @@ const StoreOrder = (props: Props) => {
                     {item.description}
                   </div>
                   <div className="w-full flex items-center justify-between p-2 h-12">
-                    <span>$100.00</span>
+                    <span>${item.price}</span>
                     {cart.items.filter((cartItem) => cartItem.id === item.id)
                       .length !== 0 && <RemoveCartItem item={item} />}
                     <Button

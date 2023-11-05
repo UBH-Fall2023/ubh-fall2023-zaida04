@@ -141,6 +141,15 @@ export function Checkout() {
       <CardFooter>
         <div className="flex w-full justify-around ">
           <Button
+            variant={"secondary"}
+            onClick={() => {
+              router.back();
+            }}
+            className="w-2/5 rounded-lg"
+          >
+            Order more
+          </Button>
+          <Button
             onClick={async () => {
               if (!user?.id) {
                 return;
@@ -166,21 +175,10 @@ export function Checkout() {
                   router.push("ordering");
                 },
               );
-
-              console.log("acked");
             }}
             className="w-2/5 rounded-lg"
           >
             {isLoading ? "Loading..." : "Place order"}
-          </Button>
-          <Button
-            variant={"secondary"}
-            onClick={() => {
-              router.back();
-            }}
-            className="w-2/5 rounded-lg"
-          >
-            Order more (pls)
           </Button>
         </div>
       </CardFooter>
