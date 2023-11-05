@@ -113,9 +113,9 @@ export default function ChatRoom() {
           <div className="flex flex-row gap-1">
             <UploadButton
               endpoint="imageUploader"
-              content={{
-                button: <p>Upload</p>,
-              }}
+              // content={{
+              //   button: <p>Upload</p>,
+              // }}
               appearance={{
                 button: {
                   width: "fit-content",
