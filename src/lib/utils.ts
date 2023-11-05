@@ -7,10 +7,17 @@ export function cn(...inputs: ClassValue[]) {
 
 export const modifyQuery = (
   setLoc: (...args: any[]) => void,
-  newQuery: string[],
+  newQuery:
+    | string
+    | Record<string, string>
+    | URLSearchParams
+    | string[][]
+    | undefined,
 ) => {
   setLoc((prev: any) => ({
     ...prev,
-    searchParams: new URLSearchParams([newQuery]),
+    searchParams: new URLSearchParams(newQuery),
   }));
 };
+
+export const run = <T>(f: () => T) => f();
