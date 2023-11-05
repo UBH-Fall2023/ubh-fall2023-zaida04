@@ -102,7 +102,8 @@ function Delivery(props: {
   location: string;
   sendStatusUpdate: any;
 }) {
-  console.log(props);
+  const router = useRouter();
+
   return (
     <Card>
       <CardHeader>
@@ -138,7 +139,10 @@ function Delivery(props: {
         </Button>
         <Button
           variant="outline"
-          onClick={() => props.sendStatusUpdate(props.id, 1)}
+          onClick={() => {
+            props.sendStatusUpdate(props.id, 1);
+            router.reload();
+          }}
         >
           Delivered
         </Button>
