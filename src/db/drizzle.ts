@@ -38,7 +38,7 @@ const idArray = (name: string) => text(name).array().notNull();
 // export type Restaurant = typeof restaurants.$inferSelect;
 
 export const items = pgTable("items", {
-  id: id(),
+  id: text("id").primaryKey(),
   name: text("name").notNull(),
   description: text("description").notNull(),
   stars: integer("stars"), // Assuming integer is a valid type function similar to serial or text
@@ -60,7 +60,7 @@ export const orders = pgTable("orders", {
   createdAt: timestamp("createdAt").$defaultFn(() => new Date()),
   tips: numeric("tips").notNull(),
   items: idArray("items"),
-  ordererId: singleId("ordererId"),
+  ordererId: text("ordererId"),
   delivererId: text("delivererId"),
   paymentType: text("paymentType"),
   schedule: text("schedule"),

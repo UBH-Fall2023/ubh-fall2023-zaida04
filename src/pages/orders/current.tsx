@@ -13,10 +13,15 @@ import { Button } from "../../components/ui/button";
 import { useSocket } from "@/contexts/SocketContext";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import { Item, Order } from "@/db/drizzle";
+import { User } from "@clerk/nextjs/server";
 
 export default function OrderIndexPage() {
   const router = useRouter();
-  const [currentOrders, setCurrentOrders] = useState([]);
+  const [currentOrders, setCurrentOrders] = useState<
+    (Omit<Order, "items"> & { items: Item[] })[]
+  >([]);
+  const [users, setUsers] = useState<User[]>([]);
   const { socket, emitEvent } = useSocket();
   const { user } = useUser();
   const delivererId = user?.id ?? null;
@@ -32,44 +37,68 @@ export default function OrderIndexPage() {
   };
 
   useEffect(() => {
+    if (!delivererId) return;
+
     async function fetchOrders() {
-      const res = await fetch("/api/orders/current");
+      const res = await fetch("/api/orders/current?delivererId=" + delivererId);
       const data = await res.json();
+      console.log(data);
       setCurrentOrders(data.items);
     }
 
     fetchOrders();
-  }, [currentOrders]);
+  }, [currentOrders, delivererId]);
 
   return (
     <div>
       <DelivererNavBar route={router.pathname} />
       <div className="mt-8 flex flex-column md:flex-row w-100 justify-center align-center">
-        <Card>
-          <CardHeader>
-            <CardTitle>Order from John Doe</CardTitle>
-            <CardDescription>Placed at 10:45AM</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div>
-              <span className="font-bold">Items: </span>
-              <span>Burger, Something 1, Something 2, Something 3</span>
-            </div>
-            <div>
-              <span className="font-bold">Location: </span>
-              <span>Greiner Hall</span>
-            </div>
-          </CardContent>
-          <CardFooter className="w-max flex flex-row justify-around">
-            <Button variant="outline" onClick={() => sendStatusUpdate(0)}>
-              Picked Up
-            </Button>
-            <Button variant="outline">Delivered</Button>
-            <Button variant="outline">Chat</Button>
-          </CardFooter>
-        </Card>
+        {currentOrders.map((order) => (
+          <Delivery
+            name={users.find((x) => x.id === order.ordererId)?.username ?? ""}
+            time={"Today"}
+            items={order.items}
+            location={order.location!}
+          />
+        ))}
       </div>
-      <h1>Hi</h1>
     </div>
+  );
+}
+
+function Delivery(props: {
+  name: string;
+  time: string;
+  items: Item[];
+  location: string;
+}) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Order from {props.name}</CardTitle>
+        <CardDescription>Placed at {props.time}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div>
+          <span className="font-bold">Items: </span>
+          <span>
+            {props.items.map((item) => (
+              <span>{item.name}, </span>
+            ))}
+          </span>
+        </div>
+        <div>
+          <span className="font-bold">Location: </span>
+          <span>{props.location}</span>
+        </div>
+      </CardContent>
+      <CardFooter className="w-max flex flex-row justify-around">
+        <Button variant="outline" onClick={() => null}>
+          Picked Up
+        </Button>
+        <Button variant="outline">Delivered</Button>
+        <Button variant="outline">Chat</Button>
+      </CardFooter>
+    </Card>
   );
 }

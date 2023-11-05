@@ -2,12 +2,14 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { makeDB } from "@/db/client";
 import { orders } from "@/db/drizzle";
 import { and, eq } from "drizzle-orm";
+import { clerkClient } from "@clerk/nextjs";
 
 const { client, db } = makeDB(process.env.DATABASE_URL!);
 
 type ResponseData = {
   message: string;
   items?: any;
+  users?: any;
 };
 
 export default async function handler(
@@ -20,12 +22,20 @@ export default async function handler(
     return;
   }
 
+  console.log(delivererId);
+  console.log(1);
   const fetchedOrders = await client.query.orders.findMany({
     where: and(
       eq(orders.delivererId, delivererId),
       eq(orders.status, "claimed"),
     ),
+    with: {
+      items: true,
+    },
   });
+  console.log(2);
+
+  const users = await clerkClient.users.getUserList();
   // await client.update(orders)
   //   .set({ status: 'ordered'})
   //   .where(eq(orders.id, '438dbe27-0887-4d73-a9dd-141e1ab2ef99'))
@@ -36,5 +46,5 @@ export default async function handler(
   // }
   res
     .status(200)
-    .json({ message: "Hello from Next.js!", items: fetchedOrders });
+    .json({ message: "Hello from Next.js!", items: fetchedOrders, users });
 }
