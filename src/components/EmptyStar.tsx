@@ -8,7 +8,6 @@ const EmptyStar = (props: Props) => {
       className=" w-5 h-5 fill-muted stroke-muted-foreground"
       fill="none"
       height="24"
-      stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="2"

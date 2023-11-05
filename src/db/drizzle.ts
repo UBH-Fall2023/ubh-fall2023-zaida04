@@ -42,7 +42,7 @@ export const items = pgTable("items", {
   name: text("name").notNull(),
   description: text("description").notNull(),
   stars: integer("stars"), // Assuming integer is a valid type function similar to serial or text
-  // restaurantId: singleId("restaurantId"),
+  restaurantName: text("restaurant-name"),
 });
 export type Item = typeof items.$inferSelect;
 // export const item_relation = relations(items, ({ one }) => {

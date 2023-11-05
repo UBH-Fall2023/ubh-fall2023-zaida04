@@ -195,10 +195,19 @@ export default function Index(props: Props) {
                 if (item) {
                   return <></>;
                 }
+                // may be a problem when adding new data
                 return popularStores
                   .find((store) => store.id == query.searchParams?.get("store"))
                   ?.items.filter(
                     (item) => item.dishType === query.searchParams?.get("type"),
+                  )
+                  .filter((item) =>
+                    !searchItemsQuery
+                      ? true
+                      : item.description
+                          .toLowerCase()
+                          .includes(searchItemsQuery) ||
+                        item.name.toLowerCase().includes(searchItemsQuery),
                   )
                   .map((item) => (
                     <div className="h-64 w-64 flex flex-col justify-between px-0 py-0 border rounded-md">

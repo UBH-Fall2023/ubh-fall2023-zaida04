@@ -7,7 +7,7 @@ export type MealItem = {
   dateAdded: number | null;
   price: number;
   rating: number;
-  restaurantId: string;
+  restaurantName: string;
   checkoutId: string;
 };
 

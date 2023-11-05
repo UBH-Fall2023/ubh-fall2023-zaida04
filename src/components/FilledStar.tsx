@@ -9,7 +9,6 @@ const Star = (props: Props) => {
         className=" w-5 h-5 fill-primary"
         fill="none"
         height="24"
-        stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"

@@ -19,7 +19,7 @@ export const closeToMeStores: Array<Store> = [
         name: "Homestyle Pot Roast",
         price: 120,
         rating: 5,
-        restaurantId: "local-diner",
+        restaurantName: "local-diner",
         id: crypto.randomUUID(),
       },
       {
@@ -28,7 +28,7 @@ export const closeToMeStores: Array<Store> = [
         name: "Local Coffee",
         price: 20,
         rating: 4,
-        restaurantId: "local-diner",
+        restaurantName: "local-diner",
         id: crypto.randomUUID(),
       },
       {
@@ -37,7 +37,7 @@ export const closeToMeStores: Array<Store> = [
         name: "Apple Pie",
         price: 50,
         rating: 5,
-        restaurantId: "local-diner",
+        restaurantName: "local-diner",
         id: crypto.randomUUID(),
       },
     ],
@@ -59,7 +59,7 @@ export const closeToMeStores: Array<Store> = [
         name: "Avocado Toast",
         price: 80,
         rating: 4,
-        restaurantId: "neighborhood-cafe",
+        restaurantName: "neighborhood-cafe",
         id: crypto.randomUUID(),
       },
       {
@@ -68,7 +68,7 @@ export const closeToMeStores: Array<Store> = [
         name: "Iced Latte",
         price: 30,
         rating: 5,
-        restaurantId: "neighborhood-cafe",
+        restaurantName: "neighborhood-cafe",
         id: crypto.randomUUID(),
       },
       {
@@ -77,7 +77,7 @@ export const closeToMeStores: Array<Store> = [
         name: "Chocolate Chip Cookie",
         price: 25,
         rating: 4,
-        restaurantId: "neighborhood-cafe",
+        restaurantName: "neighborhood-cafe",
         id: crypto.randomUUID(),
       },
     ],

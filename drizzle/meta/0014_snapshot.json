@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "6be19193-db0f-4d63-b179-431031d3139b",
-  "prevId": "3b1e6d8c-1357-4deb-af11-d2cb2e8e2aff",
+  "id": "945053b3-458c-46a0-81f9-9ab7aee4c664",
+  "prevId": "d6c7475a-eace-4ddb-8ac9-5ddb96a8b8b4",
   "tables": {
     "items": {
       "name": "items",
@@ -10,10 +10,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "name": {
           "name": "name",
@@ -30,6 +29,12 @@
         "stars": {
           "name": "stars",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "restaurant-name": {
+          "name": "restaurant-name",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         }
@@ -125,7 +130,7 @@
           "name": "ordererId",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "delivererId": {
           "name": "delivererId",

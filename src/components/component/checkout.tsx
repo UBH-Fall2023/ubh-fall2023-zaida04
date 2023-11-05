@@ -152,6 +152,7 @@ export function Checkout() {
                 orderedId: user?.id,
               });
               setIsLoading(true);
+              console.log({ cart });
               socket.emit(
                 "order",
                 {

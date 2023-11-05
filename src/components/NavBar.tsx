@@ -72,20 +72,6 @@ const NavBar = (props: Props) => {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-
-        <Switch
-          className="ml-4"
-          value={role}
-          onChange={() => {
-            if (Role.CLIENT) {
-              setRole(Role.WALKER);
-            } else {
-              setRole(Role.CLIENT);
-            }
-          }}
-        />
-
-        {/* </Button> */}
       </div>
     </header>
   );

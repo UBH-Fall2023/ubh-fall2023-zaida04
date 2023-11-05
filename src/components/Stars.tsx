@@ -35,7 +35,7 @@ const Stars = ({ setStarFill, starFill: startFill }: Props) => {
             <Button
               onClick={() => starClickCascade(idx, filled)}
               variant="ghost"
-              className="w-fit h-fit p-2"
+              className="w-fit h-fit p-1"
             >
               {filled ? <FilledStar /> : <EmptyStar />}
             </Button>

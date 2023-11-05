@@ -27,7 +27,7 @@ type MealItem = {
   dateAdded: number | null;
   price: number;
   rating: number;
-  restaurantId: string;
+  restaurantName: string;
   checkoutId: string;
 };
 
@@ -56,7 +56,6 @@ io.on("connection", (socket: Socket) => {
 
   socket.on("joinWalkers", () => {
     socket.join("walkers");
-    io.in;
   });
 
   socket.on("claimOrder", async (delivererId: string, orderId: string[]) => {
@@ -125,7 +124,7 @@ io.on("connection", (socket: Socket) => {
     ) => {
       const checkoutItems: Array<Item> = order.items.map((item) => ({
         stars: item.rating,
-        restaurantId: item.restaurantId,
+        restaurantName: item.restaurantName,
         id: item.checkoutId,
         description: item.description,
         name: item.name,
@@ -161,6 +160,10 @@ io.on("connection", (socket: Socket) => {
       ack?.();
     },
   );
+
+  // socket.on("statusUpdate", (someImportantRoomId: string, status: string) => {
+  //   io.in(someImportantRoomId).emit("forwardStatus", { status });
+  // });
 
   socket.on("connected-count", (ack) => {
     ack([...io.sockets.adapter.rooms.values()].length);
