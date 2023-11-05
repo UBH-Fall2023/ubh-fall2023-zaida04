@@ -27,6 +27,7 @@ import { cartAtom } from "@/lib/cartAtom";
 import { useRouter } from "next/router";
 import { useUser } from "@clerk/nextjs";
 import { OrderForm, Payment, Urgency } from "@/lib/types";
+import { Order } from "@/db/drizzle";
 
 export function Checkout() {
   const [cart, setCard] = useAtom(cartAtom);
@@ -170,9 +171,9 @@ export function Checkout() {
                   },
                   orderedId: user?.id,
                 },
-                () => {
+                (order: Order) => {
                   setIsLoading(false);
-                  router.push("ordering");
+                  router.push("ordering/" + order.id);
                 },
               );
             }}

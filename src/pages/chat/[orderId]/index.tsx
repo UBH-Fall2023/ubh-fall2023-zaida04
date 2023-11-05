@@ -26,9 +26,7 @@ export default function ChatRoom() {
   const { socket, emitEvent } = useSocket();
   const { user } = useUser();
   const senderId = user?.id ?? null;
-  const receiverId = router.query.receiverId as string;
-
-  console.log(receiverId);
+  const orderId = router.query.orderId as string;
 
   const handleSendMessage = (data: FormValues) => {
     if (!senderId) return;
@@ -38,10 +36,10 @@ export default function ChatRoom() {
     return emitEvent("newMessage", {
       senderId,
       content: data.message,
-      receiverId,
+      orderId,
       imageUrls: uploadedImages.map((x) => x.url),
       createdAt: new Date(),
-    } satisfies Omit<Message, "id">);
+    } satisfies Omit<Message, "id" | "receiverId">);
   };
 
   function scrollToBottom(elementId: string) {
@@ -52,7 +50,7 @@ export default function ChatRoom() {
   }
 
   useEffect(() => {
-    if (!socket || !senderId) return;
+    if (!socket || !senderId || !orderId) return;
 
     const handler = (data: Message) => {
       console.log("Event data:", data);
@@ -60,29 +58,29 @@ export default function ChatRoom() {
     };
 
     socket.on("chatMessage", handler);
-    emitEvent("joinRoom", senderId);
+    emitEvent("joinRoom", orderId);
 
     return () => {
       socket.off("event", handler);
     };
-  }, [socket, senderId]);
+  }, [socket, senderId, orderId]);
 
   useEffect(() => {
     scrollToBottom("chat-container");
   }, [messages]);
 
   useEffect(() => {
-    if (!senderId || !receiverId) return;
+    if (!orderId) return;
 
     async function fetchMessages() {
-      const res = await fetch(`/api/chat/${senderId}/${receiverId}`);
+      const res = await fetch(`/api/chat/${orderId}`);
       const json = await res.json();
       setMessages(json.messages);
       setUsers(json.users);
     }
 
     fetchMessages();
-  }, [senderId, receiverId]);
+  }, [orderId]);
 
   return (
     <div className="flex flex-col h-screen">

@@ -66,6 +66,7 @@ export const orders = pgTable("orders", {
   schedule: text("schedule"),
   urgency: text("urgency"),
   location: text("location"),
+  messageIds: idArray("messageIds"),
   status: text("status", {
     enum: [
       "ordered",
@@ -97,6 +98,7 @@ export const messages = pgTable("messages", {
   id: id(),
   content: text("content").notNull(),
   // roomId: uuid("roomId"),
+  orderId: text("orderId"),
   createdAt: timestamp("createdAt").$defaultFn(() => new Date()),
   senderId: singleId("senderId"),
   imageUrls: text("imageUrl").array(),

@@ -13,8 +13,8 @@ export default function (props: Props) {
   const router = useRouter();
   const { user } = useUser();
   const [delivererId, setDelivererId] = useState<null | string>(null);
-  const senderId = user?.id ?? null;
-  const receiverId = router.query.receiverId as string;
+  const orderId = router.query.orderId as string;
+
   useEffect(() => {
     if (!socket) return;
     socket.on(
@@ -45,7 +45,7 @@ export default function (props: Props) {
         disabled={status === "ordered"}
         onClick={() => {
           if (!user || !delivererId) return;
-          router.push(`/chat/${user.id}/${delivererId}`);
+          router.push(`/chat/${orderId}`);
         }}
         className="w-1/2 rounded-t-none"
       >

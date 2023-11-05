@@ -117,15 +117,31 @@ io.on("connection", (socket: Socket) => {
     const msg = JSON.parse(m) as Message;
     console.log(msg.content);
 
-    await client.insert(messages).values({
-      content: msg.content,
-      senderId: msg.senderId,
-      imageUrls: msg.imageUrls,
-      createdAt: new Date(),
-      receiverId: msg.receiverId,
-    });
-    io.in(msg.receiverId).emit("chatMessage", msg);
-    io.in(msg.senderId).emit("chatMessage", msg);
+    const inserted = await client
+      .insert(messages)
+      .values({
+        content: msg.content,
+        senderId: msg.senderId,
+        imageUrls: msg.imageUrls,
+        orderId: msg.orderId,
+        createdAt: new Date(),
+        receiverId: "test",
+      })
+      .returning();
+
+    const fetchOrder = await client
+      .select()
+      .from(orders)
+      .where(eq(orders.id, msg.orderId!));
+
+    await client
+      .update(orders)
+      .set({
+        messageIds: [...fetchOrder[0].messageIds, inserted[0].id],
+      })
+      .where(eq(orders.id, msg.orderId!));
+
+    io.in(msg.orderId!).emit("chatMessage", inserted[0]);
   });
 
   socket.on(
@@ -159,6 +175,7 @@ io.on("connection", (socket: Socket) => {
           paymentType: order.paymentType,
           urgency: order.urgency,
           schedule: order.schedule,
+          messageIds: [],
           location: order.location,
           items: itemEntries.map((entry) => entry.id),
           ordererId: order.orderedId,
@@ -169,7 +186,7 @@ io.on("connection", (socket: Socket) => {
       //
       //
       io.in("walkers").emit("order", createdOrder[0]);
-      ack?.();
+      ack?.(createdOrder[0]);
     },
   );
 
