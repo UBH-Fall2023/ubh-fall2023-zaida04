@@ -18,14 +18,16 @@ import { useJoinWalkers } from "@/hooks/useJoinWalkers";
 import { useSocket } from "@/contexts/SocketContext";
 import { useUser } from "@clerk/nextjs";
 import { Order } from "@/db/drizzle";
-import { formatDistance } from 'date-fns';
+import { formatDistance } from "date-fns";
 
 type Props = {};
 
 export default function QueuePage(props: Props) {
   const router = useRouter();
   const { socket, emitEvent } = useSocket();
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [orders, setOrders] = useState<(Order & { restaurantName: string })[]>(
+    [],
+  );
   const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
   const { user } = useUser();
   const delivererId = user?.id ?? null;
@@ -34,17 +36,19 @@ export default function QueuePage(props: Props) {
     const res = await fetch("/api/orders");
     const data = await res.json();
 
-    const mutatedData = await Promise.all(data.data.map(async (placedOrder: any) => {
-      const oneItem = placedOrder.items[0]
-      const itemData = await fetch(`/api/restaurant/${oneItem}`)
-      const dewrappedData = await itemData.json();
-      const restaurantName = dewrappedData.data.restaurantName || null;
+    const mutatedData = await Promise.all(
+      data.data.map(async (placedOrder: any) => {
+        const oneItem = placedOrder.items[0];
+        const itemData = await fetch(`/api/restaurant/${oneItem}`);
+        const dewrappedData = await itemData.json();
+        const restaurantName = dewrappedData.data.restaurantName || null;
 
-      return {
-        ...placedOrder,
-        restaurantName: restaurantName
-      }
-    }))
+        return {
+          ...placedOrder,
+          restaurantName: restaurantName,
+        };
+      }),
+    );
 
     setOrders(mutatedData.sort((a, b) => a.createdAt - b.createdAt));
   }
@@ -55,7 +59,7 @@ export default function QueuePage(props: Props) {
 
   useEffect(() => {
     if (orders && orders.length > 0 && !orders[0].restaurantName)
-    router.reload();
+      router.reload();
   }, [orders]);
 
   const selectOrder = (c: string | Boolean, orderId: string) => {
@@ -82,7 +86,7 @@ export default function QueuePage(props: Props) {
     const handler = (data: Order) => {
       // console.log("NEW ORDER", data);
       // setOrders((prev) => [...prev, data]);
-      fetchOrder()
+      fetchOrder();
     };
     socket.on("order", handler);
     emitEvent("joinRoom", delivererId);
@@ -97,7 +101,12 @@ export default function QueuePage(props: Props) {
         <Button disabled={selectedOrders.length === 0} onClick={claimOrder}>
           I'm Ready
         </Button>
-        <div className={`h-4/6 mt-3 w-5/6 ` + (orders.length === 0 ? 'text-center mt-4' : '')}>
+        <div
+          className={
+            `h-4/6 mt-3 w-5/6 ` +
+            (orders.length === 0 ? "text-center mt-4" : "")
+          }
+        >
           {/* {query.isLoading && <h1>Loading...</h1>} */}
           {/* {query.isError && (
             <h1>Oops! An error occured, please try refreshing the page.</h1>
@@ -132,16 +141,20 @@ export default function QueuePage(props: Props) {
                       <TableCell>{`${orderInfo.restaurantName}`}</TableCell>
                       <TableCell>{`$${orderInfo.orderTotal}`}</TableCell>
                       <TableCell>{`$${orderInfo.tips}`}</TableCell>
-                      <TableCell>{formatDistance(new Date(orderInfo.createdAt), new Date())}</TableCell>
+                      <TableCell>
+                        {formatDistance(
+                          new Date(orderInfo.createdAt),
+                          new Date(),
+                        )}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
               </TableBody>
             </Table>
-          ) :
-          orders.length === 0
-          ? (<span>There's currently no orders in the queue!</span>)
-          : (
+          ) : orders.length === 0 ? (
+            <span>There's currently no orders in the queue!</span>
+          ) : (
             <span>Loading...</span>
           )}
         </div>
