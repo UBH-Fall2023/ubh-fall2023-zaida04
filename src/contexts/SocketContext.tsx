@@ -25,6 +25,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
   useEffect(() => {
     if (socket) return;
     const socketIo = io(url, { transports: ["websocket"] });
+    console.log("Connecting to socket.io server");
 
     setSocket(socketIo);
     return () => {
