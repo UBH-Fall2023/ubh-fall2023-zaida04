@@ -35,10 +35,10 @@ type Store = {
   meta?: any;
 };
 
-const index = (props: Props) => {
+export default function Index(props: Props) {
   const [query, setQuery] = useAtom(queryAtom);
   const [cart, setCart] = useAtom(cartAtom);
-  const router = useRouter();
+  const [searchItemsQuery, setSearchItemsQuery] = useState<string | null>(null);
   const [showChartCheckId, setShowCartCheckId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -173,6 +173,10 @@ const index = (props: Props) => {
                     <path d="m21 21-4.3-4.3" />
                   </svg>
                   <Input
+                    value={searchItemsQuery ?? ""}
+                    onChange={(e) => {
+                      setSearchItemsQuery(e.target.value);
+                    }}
                     className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
                     placeholder="Search Items..."
                     type="search"
@@ -256,6 +260,4 @@ const index = (props: Props) => {
       </div>
     </>
   );
-};
-
-export default index;
+}
