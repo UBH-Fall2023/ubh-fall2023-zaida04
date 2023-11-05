@@ -48,13 +48,18 @@ const NavBar = (props: Props) => {
             <AlertDialogHeader>
               <AlertDialogTitle>Continue to checkout</AlertDialogTitle>
               <AlertDialogDescription>
-                Are you finished adding items?
+                <ol>
+                  {cart.items.map((cartItem) => (
+                    <li>• {cartItem.name}</li>
+                  ))}
+                </ol>
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>I want more food!</AlertDialogCancel>
               <AlertDialogAction
                 onClick={() => {
+                  localStorage.setItem("cart", JSON.stringify(cart));
                   router.push("checkout");
                 }}
               >

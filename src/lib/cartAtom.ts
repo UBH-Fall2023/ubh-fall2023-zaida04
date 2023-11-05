@@ -1,12 +1,8 @@
 import { atom } from "jotai";
+import { MealItem } from "./types";
 
-type CartItem = {
-  id: string;
-
-  dateAdded: number;
-};
 const initialState: {
-  items: Array<CartItem>;
+  items: Array<MealItem>;
 } = {
   items: [],
 };

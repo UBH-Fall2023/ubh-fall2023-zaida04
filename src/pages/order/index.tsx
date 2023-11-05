@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,7 +14,7 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { CardContent, Card } from "@/components/ui/card";
-import { Loader, ShoppingCart, Variable } from "lucide-react";
+import { Loader, Minus, ShoppingCart, Variable } from "lucide-react";
 import { Combobox } from "@/components/filters/ComboBox";
 import { cn, modifyQuery, run } from "@/lib/utils";
 import { useRouter } from "next/router";
@@ -27,6 +27,10 @@ import { cartAtom } from "@/lib/cartAtom";
 import { Slider } from "@/components/ui/slider";
 import NavBar from "@/components/NavBar";
 import Stars from "@/components/Stars";
+
+import { title } from "process";
+import { MealItem } from "@/lib/types";
+
 type Props = {};
 
 // const categories = {
@@ -40,12 +44,7 @@ type Store = {
   label: string;
   description: string;
   dishTypes: Array<{ value: string; emoji: string }>;
-  items: Array<{
-    id: string;
-    dishType: string;
-    src?: string;
-    description: string;
-  }>;
+  items: Array<Omit<MealItem, "dateAdded">>;
   meta?: any;
 };
 
@@ -72,14 +71,18 @@ const stores: Array<Store> = [
       {
         id: crypto.randomUUID(),
         dishType: "meals",
+        name: "Something 2",
         src: "https://www.snackandbakery.com/ext/resources/New-Consumer-Products/TIM-HORTONS-MAPLE-WAFFLE-BREAKFAST-SANDWICH-(1).jpg?1662566263",
         description: "A great piece of food",
+        price: 100,
       },
       {
         id: crypto.randomUUID(),
         dishType: "meals",
+        name: "Something 1",
         src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK3HgCoVSEsPgvFcQt6eNs2ZEgLjRVwwtpzyP2fmFPUy57Mo_3xWFCgq9t7L0t97-oMvY&usqp=CAU",
         description: "mmmhmm yummy",
+        price: 100,
       },
     ],
     description:
@@ -108,12 +111,16 @@ const stores: Array<Store> = [
       {
         id: crypto.randomUUID(),
         dishType: "mcdonalds1",
+        name: "Something 3",
         description: "some junk food",
+        price: 100,
       },
       {
         id: crypto.randomUUID(),
         dishType: "mcdonalds2",
+        name: "Something 4",
         description: "moar junk food",
+        price: 100,
       },
     ],
     description:
@@ -132,11 +139,15 @@ const stores: Array<Store> = [
         id: crypto.randomUUID(),
         dishType: "burger-king",
         description: "burgey kings meal",
+        name: "Something 1afasdf",
+        price: 100,
       },
       {
         id: crypto.randomUUID(),
         dishType: "burger-king3",
         description: "another burg king meal",
+        name: "Something fdasfsadf",
+        price: 100,
       },
     ],
     description:
@@ -156,11 +167,15 @@ const stores: Array<Store> = [
         id: crypto.randomUUID(),
         dishType: "moes1",
         description: "the best meal of all time",
+        name: "Something 5",
+        price: 100,
       },
       {
         id: crypto.randomUUID(),
         dishType: "moes3",
         description: "any oddly salty meal",
+        name: "Something 6",
+        price: 100,
       },
     ],
     description:
@@ -181,11 +196,15 @@ const stores: Array<Store> = [
         id: crypto.randomUUID(),
         dishType: "burger-king",
         description: "not gonna dedup this lul",
+        name: "Something 7",
+        price: 100,
       },
       {
         id: crypto.randomUUID(),
         dishType: "burger-king3",
         description: "ahhhhhhhhhhhhhhhhhh",
+        name: "Something 8",
+        price: 100,
       },
     ],
     description:
@@ -199,6 +218,25 @@ const index = (props: Props) => {
   const [query, setQuery] = useAtom(queryAtom);
   const [cart, setCart] = useAtom(cartAtom);
   const router = useRouter();
+  const [showChartCheckId, setShowCartCheckId] = useState<string | null>(null);
+
+  useEffect(() => {
+    console.log("running");
+    const itemsSorted = [...cart.items].sort(
+      (a, b) =>
+        Date.now() - (a.dateAdded ?? 0) - (Date.now() - (b.dateAdded ?? 0)),
+    );
+
+    const recentItem = itemsSorted.at(0);
+    if (!recentItem) {
+      return;
+    }
+    setShowCartCheckId(recentItem.id);
+    setInterval(() => {
+      setShowCartCheckId(null);
+    }, 1750);
+  }, [cart]);
+
   const [filledStars, setFilledStars] = useState<Array<boolean>>([
     true,
     true,
@@ -215,7 +253,7 @@ const index = (props: Props) => {
 
   return (
     <>
-      <div className="flex flex-col h-screen bg-[#F5F5F5]">
+      <div className="flex flex-col h-screen bg-secondary">
         <NavBar />
         <div className="w-full flex justify-around items-center px-16 h-16 bg-white dark:bg-gray-800 p-2">
           <form className="flex-1 sm:flex-initial">
@@ -357,18 +395,52 @@ const index = (props: Props) => {
                       </div>
                       <div className="w-full flex items-center justify-between p-2 h-12">
                         <span>$100.00</span>
+                        {cart.items.filter(
+                          (cartItem) => cartItem.id === item.id,
+                        ).length !== 0 && (
+                          <Button
+                            onClick={() => {
+                              const toRemoveItemIdx = cart.items.findIndex(
+                                (cartItem) => cartItem.id === item.id,
+                              );
+                              setCart((prev) => ({
+                                ...prev,
+                                items: prev.items.filter(
+                                  (prevItem, idx) => idx !== toRemoveItemIdx,
+                                ),
+                              }));
+                            }}
+                            size={"icon"}
+                          >
+                            <Minus />
+                          </Button>
+                        )}
                         <Button
+                          className="relative"
                           onClick={() => {
                             setCart((prev) => ({
                               ...prev,
                               items: [
                                 ...prev.items,
-                                { id: item.id, dateAdded: Date.now() },
+                                { ...item, dateAdded: Date.now() },
                               ],
                             }));
                           }}
                         >
-                          Add to cart
+                          <div className="flex justify-between items-center"></div>
+                          {cart.items.filter(
+                            (cartItem) => cartItem.id === item.id,
+                          ).length !== 0 && (
+                            <span className="bg-white rounded-full p-2 w-6 h-6 border text-black absolute top-[-12px] right-[-5px] flex items-center justify-center">
+                              {
+                                cart.items.filter(
+                                  (cartItem) => cartItem.id === item.id,
+                                ).length
+                              }
+                            </span>
+                          )}
+
+                          <span> Add to cart</span>
                         </Button>
                       </div>
                     </div>
