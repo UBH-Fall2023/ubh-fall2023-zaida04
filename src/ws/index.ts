@@ -127,19 +127,22 @@ io.on("connection", (socket: Socket) => {
         .values(checkoutItems)
         .returning();
 
-      await client.insert(orders).values({
-        orderTotal,
-        tips: "123",
-        items: itemEntries.map((entry) => entry.id),
-        ordererId: order.orderedId,
-      });
+      const createdOrder = await client
+        .insert(orders)
+        .values({
+          orderTotal,
+          tips: "123",
+          status: "ordered",
+          items: itemEntries.map((entry) => entry.id),
+          ordererId: order.orderedId,
+        })
+        .returning();
 
-      console.log("added order!");
+      console.log("added order!", createdOrder);
       //
       //
-      io.in("walkers").emit("order", order);
-      ack();
-      console.log({ ack });
+      io.in("walkers").emit("order", createdOrder[0]);
+      ack?.();
     },
   );
 

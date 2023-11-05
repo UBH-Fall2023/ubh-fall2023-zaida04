@@ -1,14 +1,31 @@
 import NavBar from "@/components/NavBar";
 import RemoveCartItem from "@/components/RemoveCartItem";
 import { Checkout } from "@/components/component/checkout";
+import { useSocket } from "@/contexts/SocketContext";
 import { cartAtom } from "@/lib/cartAtom";
+import { useUser } from "@clerk/nextjs";
 import { useAtom } from "jotai";
-import React from "react";
+import React, { useEffect } from "react";
 
 type Props = {};
 
 export default function Index(props: Props) {
   const [cart, setCart] = useAtom(cartAtom);
+  const { socket, emitEvent } = useSocket();
+  const { user } = useUser();
+  // useEffect(() => {
+  //   const item = localStorage.getItem("cart");
+  //   if (!item) {
+  //     return;
+  //   }
+  //   setCart(JSON.parse(item) as { items: Array<MealItem> });
+  // }, []);
+  // t j
+
+  useEffect(() => {
+    if (!socket || !user) return;
+    emitEvent("joinRoom", user.id);
+  }, [socket, user]);
 
   return (
     <div className="bg-[#FEFEFEFE] ">

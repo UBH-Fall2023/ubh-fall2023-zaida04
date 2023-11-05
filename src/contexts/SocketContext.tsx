@@ -29,9 +29,14 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
 
     setSocket(socketIo);
     return () => {
+      console.log("Disconnecting");
       socketIo.disconnect();
     };
   }, [url]);
+
+  useEffect(() => {
+    console.log("SOCKET STATE", socket?.connected);
+  }, [socket]);
 
   const emitEvent = (event: string, data: any) => {
     socket?.emit(event, typeof data === "object" ? JSON.stringify(data) : data);

@@ -58,9 +58,9 @@ export default function Index(props: Props) {
     }, 1750);
   }, [cart]);
 
-  useEffect(() => {
-    localStorage.setItem("cart", '{"items":""}');
-  }, []);
+  // useEffect(() => {
+  //   localStorage.setItem("cart", '{"items":""}');
+  // }, []);
 
   const [filledStars, setFilledStars] = useState<Array<boolean>>([
     true,
@@ -191,7 +191,7 @@ export default function Index(props: Props) {
             </div>
             <div className="flex w-full p-4 gap-x-5 overflow-y-scroll h-full ">
               {run(() => {
-                const item = query.searchParams?.get("item");
+                const item = query?.searchParams?.get("item");
                 if (item) {
                   return <></>;
                 }

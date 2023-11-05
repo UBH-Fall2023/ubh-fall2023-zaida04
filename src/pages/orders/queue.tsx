@@ -17,22 +17,29 @@ import { useOrderSubscribe } from "@/hooks/useOrdersSubscribe";
 import { useJoinWalkers } from "@/hooks/useJoinWalkers";
 import { useSocket } from "@/contexts/SocketContext";
 import { useUser } from "@clerk/nextjs";
+import { Order } from "@/db/drizzle";
 
 type Props = {};
 
 export default function QueuePage(props: Props) {
   const router = useRouter();
   const { socket, emitEvent } = useSocket();
+  const [orders, setOrders] = useState<Order[]>([]);
   const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
   const { user } = useUser();
   const delivererId = user?.id ?? null;
 
-  useJoinWalkers();
+  // useJoinWalkers();
 
-  const query = useQuery({
-    queryFn: async () => await (await fetch("/api/orders")).json(),
-    queryKey: ["orders"],
-  });
+  useEffect(() => {
+    async function fetchOrder() {
+      const res = await fetch("/api/orders");
+      const data = await res.json();
+      setOrders(data.data);
+    }
+
+    fetchOrder();
+  }, []);
 
   const selectOrder = (c: string | Boolean, orderId: string) => {
     if (c) {
@@ -47,14 +54,22 @@ export default function QueuePage(props: Props) {
   };
 
   const claimOrder = async () => {
-    socket.emit('claimOrder', delivererId, selectedOrders)
+    socket.emit("claimOrder", delivererId, selectedOrders);
     router.push("/orders/current");
   };
 
   useEffect(() => {
+    // console.log(socket, delivererId);
     if (!socket || !delivererId) return;
+
+    const handler = (data: Order) => {
+      console.log("NEW ORDER", data);
+      setOrders((prev) => [...prev, data]);
+    };
+    socket.on("order", handler);
     emitEvent("joinRoom", delivererId);
-  }, [socket]);
+    emitEvent("joinRoom", "walkers");
+  }, [socket, delivererId]);
 
   return (
     <div>
@@ -64,16 +79,12 @@ export default function QueuePage(props: Props) {
         <Button disabled={selectedOrders.length === 0} onClick={claimOrder}>
           I'm Ready
         </Button>
-        <div
-          className={`h-4/6 mt-3 w-5/6 ${
-            query.isLoading || query.isError ? "text-center" : null
-          }`}
-        >
-          {query.isLoading && <h1>Loading...</h1>}
-          {query.isError && (
+        <div className={`h-4/6 mt-3 w-5/6`}>
+          {/* {query.isLoading && <h1>Loading...</h1>} */}
+          {/* {query.isError && (
             <h1>Oops! An error occured, please try refreshing the page.</h1>
-          )}
-          {query.data && query.data.data && query.data.data.length > 0 ? (
+          )} */}
+          {orders.length > 0 ? (
             <Table className="min-w-full mt-2 border border-gray-300">
               <TableCaption>A list of orders you can pick up.</TableCaption>
               <TableHeader>
@@ -87,9 +98,9 @@ export default function QueuePage(props: Props) {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {query.data.data.map((orderInfo: any, idx: string) => {
+                {orders.map((orderInfo: Order) => {
                   return (
-                    <TableRow key={idx}>
+                    <TableRow key={orderInfo.id}>
                       <TableCell className="font-medium">
                         <div className="flex gap-2">
                           <Checkbox
@@ -111,8 +122,8 @@ export default function QueuePage(props: Props) {
                 })}
               </TableBody>
             </Table>
-          ) : query.isLoading ? null : (
-            <span>No orders to be fulfilled...(yet!)</span>
+          ) : (
+            <span>Loading...</span>
           )}
         </div>
       </div>

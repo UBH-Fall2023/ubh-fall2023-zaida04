@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev:ws": "tsx --watch src/ws/index.ts",
+    "dev:ws": "tsx src/ws/index.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
