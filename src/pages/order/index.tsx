@@ -1,19 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loader } from "lucide-react";
 import { Combobox } from "@/components/filters/ComboBox";
 import { cn, modifyQuery, run } from "@/lib/utils";
 import { useRouter } from "next/router";
@@ -25,7 +12,6 @@ import { Slider } from "@/components/ui/slider";
 import NavBar from "@/components/NavBar";
 import Stars from "@/components/Stars";
 
-import { title } from "process";
 import { MealItem } from "@/lib/types";
 import RemoveCartItem from "@/components/RemoveCartItem";
 
@@ -267,10 +253,6 @@ const index = (props: Props) => {
     true,
   ]);
   // console.log(query, router);
-  if (!router.isReady) {
-    return <Loader className="animate-spin" />;
-  }
-
   // const query = router.query as { store: string | null };
 
   return (
