@@ -12,7 +12,5 @@ export const useJoinWalkers = () => {
     }
 
     socket.emit("joinWalkers");
-
-    useEffect(() => {}, []);
   }, []);
 };

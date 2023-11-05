@@ -147,7 +147,7 @@ export function Checkout() {
         </div>
       </CardContent>
       <CardFooter>
-        <div className="flex w-full justify-around">
+        <div className="flex w-full justify-around ">
           <Button
             onClick={() => {
               if (!user?.id) {

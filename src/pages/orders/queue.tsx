@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import {
   Table,
   TableBody,
@@ -13,11 +13,15 @@ import { useQuery } from "@tanstack/react-query";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import DelivererNavBar from "@/components/DelivererNavBar";
+import { useOrderSubscribe } from "@/hooks/useOrdersSubscribe";
+import { useJoinWalkers } from "@/hooks/useJoinWalkers";
 
 type Props = {};
 
 export default function MainPage(props: Props) {
-  const router = useRouter()
+  const router = useRouter();
+
+  useJoinWalkers();
   const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
 
   const query = useQuery({
@@ -40,18 +44,18 @@ export default function MainPage(props: Props) {
   const claimOrder = async () => {
     const claimOrderStatus = await fetch("/api/orders");
 
-    router.push('/orders/current')
+    router.push("/orders/current");
     console.log("clicked");
   };
 
   useEffect(() => {
     console.log(selectedOrders);
-    console.log(router)
+    console.log(router);
   }, [selectedOrders]);
 
   return (
     <div>
-      <DelivererNavBar route={router.pathname}/>
+      <DelivererNavBar route={router.pathname} />
       <div className="h-max flex flex-col items-center justify-center">
         <h1 className="my-8 font-bold text-xl">Deliverer Dashboard</h1>
         <Button disabled={selectedOrders.length === 0} onClick={claimOrder}>

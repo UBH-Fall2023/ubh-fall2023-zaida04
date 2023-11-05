@@ -299,6 +299,12 @@ const index = (props: Props) => {
                 const firstType = store.dishTypes.at(0)?.value;
                 if (!firstType) return;
 
+                const currentStore = query.searchParams?.get("store");
+                if (currentStore) {
+                  modifyQuery(setQuery, [["type", firstType]]);
+                  return;
+                }
+
                 modifyQuery(setQuery, [
                   ["store", store.id],
                   ["type", firstType],
@@ -333,7 +339,12 @@ const index = (props: Props) => {
             </Button>
           ))}
         </div>
-        <div className="h-3/5 flex bg-white border-t-2 w-full">
+        <div
+          className={cn([
+            "h-3/5  bg-white border-t-2 w-full ",
+            query.searchParams?.get("store") ? "flex" : "hidden",
+          ])}
+        >
           <div className="w-48 border-r-2 h-full p-2 flex flex-col items-center gap-y-2">
             <Input
               className="pl-8"
@@ -370,7 +381,7 @@ const index = (props: Props) => {
                 <Stars setStarFill={setFilledStars} starFill={filledStars} />
               </div>
             </div>
-            <div className="flex w-full p-4 gap-x-5 overflow-y-scroll h-full">
+            <div className="flex w-full p-4 gap-x-5 overflow-y-scroll h-full ">
               {run(() => {
                 const item = query.searchParams?.get("item");
                 if (item) {
