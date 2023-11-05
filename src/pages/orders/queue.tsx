@@ -30,33 +30,33 @@ export default function QueuePage(props: Props) {
   const { user } = useUser();
   const delivererId = user?.id ?? null;
 
-  // const date = new Date(orders[0].createdAt!);
-  // const timePassed = formatDistance(date, new Date(), { addSuffix: true });
+  async function fetchOrder() {
+    const res = await fetch("/api/orders");
+    const data = await res.json();
 
-  // useJoinWalkers();
+    const mutatedData = await Promise.all(data.data.map(async (placedOrder: any) => {
+      const oneItem = placedOrder.items[0]
+      const itemData = await fetch(`/api/restaurant/${oneItem}`)
+      const dewrappedData = await itemData.json();
+      const restaurantName = dewrappedData.data.restaurantName || null;
+
+      return {
+        ...placedOrder,
+        restaurantName: restaurantName
+      }
+    }))
+
+    setOrders(mutatedData.sort((a, b) => a.createdAt - b.createdAt));
+  }
 
   useEffect(() => {
-    async function fetchOrder() {
-      const res = await fetch("/api/orders");
-      const data = await res.json();
-
-      const mutatedData = await Promise.all(data.data.map(async (placedOrder: any) => {
-        const oneItem = placedOrder.items[0]
-        const itemData = await fetch(`/api/restaurant/${oneItem}`)
-        const dewrappedData = await itemData.json();
-        const restaurantName = dewrappedData.data.restaurantName || null;
-
-        return {
-          ...placedOrder,
-          restaurantName: restaurantName
-        }
-      }))
-
-      setOrders(mutatedData);
-    }
-
     fetchOrder();
   }, []);
+
+  useEffect(() => {
+    if (orders && orders.length > 0 && !orders[0].restaurantName)
+    router.reload();
+  }, [orders]);
 
   const selectOrder = (c: string | Boolean, orderId: string) => {
     if (c) {
@@ -80,8 +80,9 @@ export default function QueuePage(props: Props) {
     if (!socket || !delivererId) return;
 
     const handler = (data: Order) => {
-      console.log("NEW ORDER", data);
-      setOrders((prev) => [...prev, data]);
+      // console.log("NEW ORDER", data);
+      // setOrders((prev) => [...prev, data]);
+      fetchOrder()
     };
     socket.on("order", handler);
     emitEvent("joinRoom", delivererId);
