@@ -12,7 +12,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <ClerkProvider {...pageProps}>
       <SocketProvider
         url={
-          process.env.VERCEL
+          process.env.NEXT_PUBLIC_VERCEL_URL
             ? "http://159.203.85.181:4000/"
             : "http://localhost:4000/"
         }
