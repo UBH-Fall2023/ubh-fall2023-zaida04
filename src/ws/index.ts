@@ -81,6 +81,19 @@ io.on("connection", (socket: Socket) => {
     });
   });
 
+  socket.on('updateOrderStatus', async (orderId: string, status: any) => {
+    const userId: { ordererId: string }[] = await client.update(orders)
+      .set({
+        status
+      })
+      .where(eq(orders.id, orderId))
+      .returning({ ordererId: orders.id})
+
+    if (!userId) return;
+
+    io.in(userId[0].ordererId).emit('orderUpdate', 'picked-up')
+  })
+
   socket.on("joinRoom", (meId: string) => {
     socket.join(meId);
     console.log(`User ${meId} has joined`);

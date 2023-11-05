@@ -66,8 +66,7 @@ export const orders = pgTable("orders", {
     enum: [
       "ordered",
       "claimed",
-      "waiting",
-      "delivering",
+      "picked-up",
       "delivered",
       "archived",
       "cancelled",
