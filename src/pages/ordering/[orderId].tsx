@@ -41,9 +41,9 @@ export default function (props: Props) {
 
     async function fetchOrder() {
       const res = await fetch(`/api/orders/${orderId}`);
-      const { delivererId, status } = await res.json();
-      setStatus(status);
-      setDelivererId(delivererId);
+      const data = await res.json();
+      setStatus(data.order.status);
+      setDelivererId(data.order.delivererId);
     }
 
     fetchOrder();
