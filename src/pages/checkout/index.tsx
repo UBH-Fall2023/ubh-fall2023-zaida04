@@ -38,6 +38,14 @@ export default function Index(props: Props) {
         </div>
         <div className="w-1/2 h-full flex flex-col items-center gap-y-5 p-5 overflow-y-scroll">
           <p className="text-xl font-bold">Summary</p>
+          <p className="text-lg font-semibold">
+            <span> Subtotal: $</span>
+            <span>
+              {cart.items
+                .reduce((prev, curr) => curr.price + prev, 0)
+                .toFixed(2)}
+            </span>
+          </p>
           {cart.items.map((cartItem) => (
             <div className="flex w-full h-full items-center gap-2 border-b border-primary  p-4 ">
               {/* <Minus />
