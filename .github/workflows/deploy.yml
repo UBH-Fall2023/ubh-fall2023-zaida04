@@ -42,4 +42,3 @@ jobs:
             cd proj
             git pull
             pnpm run build:ws
-            pnpm run start:ws:pm2
