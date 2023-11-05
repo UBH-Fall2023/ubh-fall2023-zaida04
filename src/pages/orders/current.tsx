@@ -66,7 +66,7 @@ export default function OrderIndexPage() {
     <div>
       <DelivererNavBar route={router.pathname} />
 
-      <div className="w-full flex gap-2 justify-center items-center">
+      <div className="w-full flex gap-2 justify-center items-center flex-col h-full">
         {isLoading ? (
           // <Loader className="animate-spin" />
           <div className="animate-pulse border border-rounded bg-secondary rounded-md shadow-md h-56 w-72"></div>
