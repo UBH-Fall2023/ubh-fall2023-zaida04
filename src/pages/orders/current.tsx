@@ -153,7 +153,7 @@ function Delivery(props: {
           size={"icon"}
           variant="outline"
           onClick={() => {
-            router.push(`/chat/${user!.id}/${props.ordererId}`);
+            router.push(`/chat/${props.ordererId}/${user!.id}`);
           }}
         >
           <MessageCircle />
