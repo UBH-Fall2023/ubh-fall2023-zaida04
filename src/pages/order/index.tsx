@@ -229,7 +229,7 @@ export default function Index(props: Props) {
                         item.name.toLowerCase().includes(searchItemsQuery),
                   )
                   .map((item) => (
-                    <div className="h-72 w-64 flex flex-col justify-between px-0 py-0 border rounded-md">
+                    <div className="h-80 w-64 flex flex-col justify-between px-0 py-0 border rounded-md">
                       {item.src && (
                         <Image
                           className="rounded-lg  w-full  object-fill mb-auto max-h-[20rem]"
@@ -239,6 +239,7 @@ export default function Index(props: Props) {
                           src={item.src}
                         />
                       )}
+                      <p className="font-bold px-2">{item.name}</p>
                       <div className="w-full text-sm h-12 p-2">
                         {item.description}
                       </div>

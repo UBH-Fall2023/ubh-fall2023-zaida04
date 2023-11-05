@@ -55,7 +55,7 @@ export const popularStores: Array<Store> = [
     items: [
       {
         dishType: "meals",
-        name: "Something 2",
+        name: "Waffle and Chicken",
         src: "https://www.snackandbakery.com/ext/resources/New-Consumer-Products/TIM-HORTONS-MAPLE-WAFFLE-BREAKFAST-SANDWICH-(1).jpg?1662566263",
         description: "A great piece of food",
         price: 4.31,
@@ -65,7 +65,7 @@ export const popularStores: Array<Store> = [
       },
       {
         dishType: "meals",
-        name: "Something 1",
+        name: "Burrito",
         src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK3HgCoVSEsPgvFcQt6eNs2ZEgLjRVwwtpzyP2fmFPUy57Mo_3xWFCgq9t7L0t97-oMvY&usqp=CAU",
         description: "Delicious 100%",
         price: 2.53,
@@ -75,7 +75,7 @@ export const popularStores: Array<Store> = [
       },
       {
         dishType: "meals",
-        name: "Something 1",
+        name: "Bagel",
         src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSifzMdgcWelK1BCZe5ZmOlroJ34HOjLBvl3g&usqp=CAU",
         description: "mmmhmm yummy",
         price: 4.11,
@@ -85,7 +85,7 @@ export const popularStores: Array<Store> = [
       },
       {
         dishType: "meals",
-        name: "Something 1",
+        name: "Breakfeast sandwhich",
         src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROYC_q2jyEbIjRWgLTWQhy0nrkMB1hUWdqcQ&usqp=CAU",
         description: "mmmhmm yummy",
         price: 4.11,
