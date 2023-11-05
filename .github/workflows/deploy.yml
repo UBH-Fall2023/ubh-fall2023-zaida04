@@ -38,6 +38,7 @@ jobs:
           password: 6oXJK2£^02a
           port: 22
           script: |
+            source ~/.bashrc
             cd proj
             git pull
             pnpm run build:ws
