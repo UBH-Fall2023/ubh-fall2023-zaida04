@@ -1,17 +1,13 @@
 import NavBar from "@/components/NavBar";
 import RemoveCartItem from "@/components/RemoveCartItem";
 import { Checkout } from "@/components/component/checkout";
-import { Button } from "@/components/ui/button";
 import { cartAtom } from "@/lib/cartAtom";
-import { MealItem } from "@/lib/types";
 import { useAtom } from "jotai";
-import { Minus } from "lucide-react";
-import Image from "next/image";
-import React, { useEffect, useMemo, useState } from "react";
+import React from "react";
 
 type Props = {};
 
-const index = (props: Props) => {
+export default function Index(props: Props) {
   const [cart, setCart] = useAtom(cartAtom);
   // useEffect(() => {
   //   const item = localStorage.getItem("cart");
@@ -20,6 +16,7 @@ const index = (props: Props) => {
   //   }
   //   setCart(JSON.parse(item) as { items: Array<MealItem> });
   // }, []);
+  // t j
 
   return (
     <div className="bg-[#FEFEFEFE] ">
@@ -42,11 +39,16 @@ const index = (props: Props) => {
         <div className="w-1/2 h-full flex flex-col items-center gap-y-5 p-5 overflow-y-scroll">
           <p className="text-xl font-bold">Summary</p>
           {cart.items.map((cartItem) => (
-            <div className="flex w-full h-full items-center justify-between border-b border-primary  p-4 ">
+            <div className="flex w-full h-full items-center gap-2 border-b border-primary  p-4 ">
               {/* <Minus />
                */}
               <RemoveCartItem item={cartItem} />
-              <div className="border-2 shadow-lg rounded-md  text-lg font-semibold items-center justify-center  h-fit flex-col  w-fit">
+              <CartItem
+                imgUrl={cartItem.src!}
+                item={cartItem.name}
+                price={cartItem.price.toString()}
+              />
+              {/* <div className="border-2 shadow-lg rounded-md  text-lg font-semibold items-center justify-center  h-fit flex-col  w-fit">
                 {cartItem.name}
 
                 {cartItem.src && (
@@ -57,7 +59,7 @@ const index = (props: Props) => {
                     src={cartItem.src}
                   />
                 )}
-              </div>
+              </div> */}
               <span className="font-semibold text-lg">
                 ${cartItem.price.toFixed(2)}
               </span>
@@ -71,6 +73,28 @@ const index = (props: Props) => {
       </div>
     </div>
   );
-};
+}
 
-export default index;
+function CartItem(props: { imgUrl: string; item: string; price: string }) {
+  return (
+    <div className="w-full k flex items-center gap-4 mb-3">
+      <img
+        alt="Product 1"
+        className="rounded-full object-cover"
+        height={50}
+        src={props.imgUrl}
+        style={{
+          aspectRatio: "50/50",
+          objectFit: "cover",
+        }}
+        width={50}
+      />
+      <div className="flex-grow">
+        <h3 className="font-semibold text-base md:text-lg">{props.item}</h3>
+        {/* <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          {props.price}
+        </p> */}
+      </div>
+    </div>
+  );
+}
