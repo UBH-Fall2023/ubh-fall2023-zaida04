@@ -6,7 +6,8 @@ export default function OrderIndexPage() {
 
   return (
     <div>
-      <h1>Index. Redirect to queue?</h1>
+      <DelivererNavBar route={router.pathname}/>
+      <h1>History</h1>
     </div>
   )
 }
