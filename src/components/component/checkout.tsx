@@ -149,17 +149,18 @@ export function Checkout() {
                 ...cart,
                 orderedId: user?.id,
               });
-              await socket.emitWithAck(
+              socket.emit(
                 "order",
                 {
                   ...formState,
                   ...cart,
                   orderedId: user?.id,
                 },
-                (amountOfClients: number) => {},
+                () => {
+                  router.push("ordering");
+                },
               );
 
-              router.push("ordering");
               console.log("acked");
             }}
             className="w-2/5 rounded-lg"

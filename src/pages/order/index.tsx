@@ -16,6 +16,7 @@ import { MealItem } from "@/lib/types";
 import RemoveCartItem from "@/components/RemoveCartItem";
 import PopularCarousel from "@/components/PopularCarousel";
 import { queryAtom } from "@/lib/queryAtom";
+import CloseToMeCarousel from "@/components/CloseToMeCarousel";
 
 type Props = {};
 
@@ -106,6 +107,7 @@ const index = (props: Props) => {
         </div>
 
         <PopularCarousel />
+        <CloseToMeCarousel />
 
         <div
           className={cn([

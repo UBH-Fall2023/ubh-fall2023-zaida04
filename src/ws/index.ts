@@ -114,7 +114,7 @@ io.on("connection", (socket: Socket) => {
         description: item.description,
         name: item.name,
       }));
-
+      //
       const orderTotal = order.items
         .reduce((prev, curr) => prev + curr.price, 0)
         .toFixed(2);
@@ -132,9 +132,10 @@ io.on("connection", (socket: Socket) => {
 
       console.log("added order!");
       //
-
+      //
       io.in("walkers").emit("order", order);
       ack();
+      console.log({ ack });
     },
   );
 

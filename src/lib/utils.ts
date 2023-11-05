@@ -23,7 +23,7 @@ export const modifyQuery = (
 
 export const run = <T>(f: () => T) => f();
 
-type Store = {
+export type Store = {
   src: string;
   id: string;
   label: string;
