@@ -79,6 +79,7 @@ export default function OrderIndexPage() {
                 name={currentUser?.firstName ?? currentUser?.username ?? ""}
                 time={"Today"}
                 allItems={items}
+                ordererId={order.ordererId!}
                 id={order.id}
                 items={order.items}
                 location={order.location!}
@@ -99,10 +100,12 @@ function Delivery(props: {
   id: string;
   allItems: Item[];
   items: string[];
+  ordererId: string;
   location: string;
   sendStatusUpdate: any;
 }) {
   const router = useRouter();
+  const { user } = useUser();
 
   return (
     <Card>
@@ -146,7 +149,13 @@ function Delivery(props: {
         >
           Delivered
         </Button>
-        <Button size={"icon"} variant="outline">
+        <Button
+          size={"icon"}
+          variant="outline"
+          onClick={() => {
+            router.push(`/chat/${user!.id}/${props.ordererId}`);
+          }}
+        >
           <MessageCircle />
         </Button>
       </CardFooter>
