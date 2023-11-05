@@ -16,7 +16,7 @@ export default function ReverseOrder({ storeQuery }: Props) {
   return (
     <div className="bg-primary/10">
       <h1 className="text-4xl">Other stores</h1>
-      <div className="flex h-fit py-4 gap-x-6 overflow-x-scroll overflow-y-auto  px-6 border-y-2 bg-primary/10 border-white">
+      <div className="flex h-fit py-4 gap-x-6 overflow-x-auto overflow-y-auto  px-6 border-y-2 bg-primary/10 border-white">
         {[...popularStores]
           .filter((s) => s.id !== "subway")
           .reverse()
