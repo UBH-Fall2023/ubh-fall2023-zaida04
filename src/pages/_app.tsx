@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <SocketProvider
         url={
           process.env.NEXT_PUBLIC_VERCEL_URL
-            ? "http://159.203.85.181:4000/"
+            ? "https://deliver-ws.nico.engineer/"
             : "http://localhost:4000/"
         }
       >
