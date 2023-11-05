@@ -38,6 +38,7 @@ export function Checkout() {
     paymentType: Payment.VENMO,
     schedule: "now",
     urgency: Urgency.MEDIUM,
+    timePlaced: null,
   });
   const router = useRouter();
   const { user } = useUser();
@@ -146,7 +147,7 @@ export function Checkout() {
                 return;
               }
               console.log("going out", {
-                ...formState,
+                ...{ ...formState, timePlaced: Date.now() },
                 ...cart,
                 orderedId: user?.id,
               });

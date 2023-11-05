@@ -37,7 +37,7 @@ type OrderForm = {
   paymentType: Payment;
   urgency: Urgency;
   schedule: string;
-  datePlaced: number;
+  timePlaced: number | null;
 };
 const app = express();
 const { client } = makeDB(process.env.DATABASE_URL!);

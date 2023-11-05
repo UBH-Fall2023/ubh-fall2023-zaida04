@@ -17,6 +17,7 @@ export type OrderForm = {
   paymentType: Payment;
   urgency: Urgency;
   schedule: string;
+  timePlaced: number | null;
 };
 
 export enum Urgency {
