@@ -22,6 +22,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useSocket } from "@/contexts/SocketContext";
+import { useAtom } from "jotai";
+import { cartAtom } from "@/lib/cartAtom";
 enum Urgency {
   HIGH = "high",
   MEDIUM = "medium",
@@ -40,6 +42,7 @@ type OrderForm = {
   schedule: string;
 };
 export function Checkout() {
+  const [cart, setCard] = useAtom(cartAtom);
   const [formState, setFormState] = useState<OrderForm>({
     location: "",
     name: "",
@@ -143,7 +146,7 @@ export function Checkout() {
       <CardFooter>
         <Button
           onClick={() => {
-            socket.emit("order", formState);
+            socket.emit("order", { ...formState, ...cart });
           }}
           className="w-3/4 rounded-lg"
         >

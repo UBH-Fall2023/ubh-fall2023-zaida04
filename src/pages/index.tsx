@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import Link from "next/link";
 import { ReactNode, memo } from "react";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@/contexts/useUser";
 
 const inter = Inter({ subsets: ["latin"] });
 

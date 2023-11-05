@@ -15,6 +15,17 @@ enum Payment {
   CASHAPP = "cashapp",
   CASH = "cash",
 }
+
+type MealItem = {
+  id: string;
+  name: string;
+  dishType: string;
+  src?: string;
+  description: string;
+  dateAdded: number | null;
+  price: number;
+};
+
 type OrderForm = {
   name: string;
   location: string;
@@ -37,7 +48,9 @@ app.get("/", (req, res) => res.json({ message: "Hello world!" }));
 io.on("connection", (socket: Socket) => {
   console.log("a user connected");
 
-  // socket.on('joinDelivers', ())
+  socket.on("joinWalkers", () => {
+    socket.join("walkers");
+  });
 
   socket.on("joinRoom", (meId: string) => {
     socket.join(meId);
@@ -63,12 +76,12 @@ io.on("connection", (socket: Socket) => {
     io.in(msg.senderId).emit("chatMessage", msg);
   });
 
-  socket.on("order", async (m: OrderForm) => {
+  socket.on("order", async (m: OrderForm & {}) => {
     console.log({ m });
 
     // await client.insert(orders).values({
 
-    // })
+    // });
   });
 
   socket.on("disconnect", () => {
