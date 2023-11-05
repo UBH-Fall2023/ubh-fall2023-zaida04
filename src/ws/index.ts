@@ -1,8 +1,8 @@
 import "dotenv/config";
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
-import { Item, Message, items, messages, orders } from "@/db/drizzle";
-import { makeDB } from "@/db/client";
+import { Item, Message, items, messages, orders } from "../db/drizzle";
+import { makeDB } from "../db/client";
 import express from "express";
 import { eq } from "drizzle-orm";
 
