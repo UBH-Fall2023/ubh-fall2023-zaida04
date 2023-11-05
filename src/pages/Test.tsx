@@ -1,4 +1,4 @@
-import { useUser } from "@/context/useUser";
+import { useUser } from "@/contexts/useUser";
 import React from "react";
 
 type Props = {};

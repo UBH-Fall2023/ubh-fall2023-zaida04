@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { AppProps } from "next/app";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SocketProvider } from "@/contexts/SocketContext";
-import { Role, User, UserContext } from "@/context/UserProvider";
+import { Role, User, UserContext } from "@/contexts/UserProvider";
 import { useEffect, useState } from "react";
 import Test from "./Test";
 
