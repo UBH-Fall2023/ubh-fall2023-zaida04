@@ -77,7 +77,7 @@ io.on("connection", (socket: Socket) => {
         })
         .where(eq(orders.id, order.id));
 
-      io.in(order.ordererId).emit("orderUpdate", "claimed");
+      io.in(order.ordererId!).emit("orderUpdate", "claimed");
     });
   });
 
@@ -90,7 +90,7 @@ io.on("connection", (socket: Socket) => {
       .where(eq(orders.id, orderId))
       .returning();
 
-    io.in(userId[0].ordererId).emit("orderUpdate", "picked-up");
+    io.in(userId[0].ordererId!).emit("orderUpdate", status);
   });
 
   socket.on("joinRoom", (meId: string) => {

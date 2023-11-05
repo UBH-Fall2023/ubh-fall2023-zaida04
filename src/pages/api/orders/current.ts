@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { makeDB } from "@/db/client";
-import { orders } from "@/db/drizzle";
-import { and, eq } from "drizzle-orm";
+import { items, orders } from "@/db/drizzle";
+import { and, eq, inArray } from "drizzle-orm";
 import { clerkClient } from "@clerk/nextjs";
 
 const { client, db } = makeDB(process.env.DATABASE_URL!);
@@ -10,6 +10,7 @@ type ResponseData = {
   message: string;
   items?: any;
   users?: any;
+  fetchedItems?: any;
 };
 
 export default async function handler(
@@ -29,9 +30,15 @@ export default async function handler(
       eq(orders.delivererId, delivererId),
       eq(orders.status, "claimed"),
     ),
-    with: {
-      items: true,
-    },
+  });
+  const fetchedItems = await client.query.items.findMany({
+    where: inArray(
+      items.id,
+      fetchedOrders.reduce(
+        (acc, cur) => [...acc, ...cur.items],
+        [] as string[],
+      ),
+    ),
   });
   console.log(2);
 
@@ -44,7 +51,10 @@ export default async function handler(
   //   const
   // } else {
   // }
-  res
-    .status(200)
-    .json({ message: "Hello from Next.js!", items: fetchedOrders, users });
+  res.status(200).json({
+    message: "Hello from Next.js!",
+    items: fetchedOrders,
+    users,
+    fetchedItems,
+  });
 }

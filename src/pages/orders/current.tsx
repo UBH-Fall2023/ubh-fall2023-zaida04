@@ -18,10 +18,9 @@ import { User } from "@clerk/nextjs/server";
 
 export default function OrderIndexPage() {
   const router = useRouter();
-  const [currentOrders, setCurrentOrders] = useState<
-    (Omit<Order, "items"> & { items: Item[] })[]
-  >([]);
+  const [currentOrders, setCurrentOrders] = useState<Order[]>([]);
   const [users, setUsers] = useState<User[]>([]);
+  const [items, setItems] = useState<Item[]>([]);
   const { socket, emitEvent } = useSocket();
   const { user } = useUser();
   const delivererId = user?.id ?? null;
@@ -44,10 +43,12 @@ export default function OrderIndexPage() {
       const data = await res.json();
       console.log(data);
       setCurrentOrders(data.items);
+      setUsers(data.users);
+      setItems(data.fetchedItems);
     }
 
     fetchOrders();
-  }, [currentOrders, delivererId]);
+  }, [delivererId]);
 
   return (
     <div>
@@ -57,6 +58,7 @@ export default function OrderIndexPage() {
           <Delivery
             name={users.find((x) => x.id === order.ordererId)?.username ?? ""}
             time={"Today"}
+            allItems={items}
             items={order.items}
             location={order.location!}
           />
@@ -69,9 +71,11 @@ export default function OrderIndexPage() {
 function Delivery(props: {
   name: string;
   time: string;
-  items: Item[];
+  allItems: Item[];
+  items: string[];
   location: string;
 }) {
+  console.log(props);
   return (
     <Card>
       <CardHeader>
@@ -82,9 +86,11 @@ function Delivery(props: {
         <div>
           <span className="font-bold">Items: </span>
           <span>
-            {props.items.map((item) => (
-              <span>{item.name}, </span>
-            ))}
+            {props.allItems
+              .filter((x) => props.items.includes(x.id))
+              .map((item) => (
+                <span>{item.name}, </span>
+              ))}
           </span>
         </div>
         <div>

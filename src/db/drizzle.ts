@@ -78,7 +78,7 @@ export const orders = pgTable("orders", {
   }),
 });
 export type Order = typeof orders.$inferSelect;
-export const order_relation = relations(orders, ({ one }) => {
+export const order_relation = relations(orders, ({ many }) => {
   return {
     // orderer: one(users, {
     //   fields: [orders.ordererId],
@@ -88,10 +88,7 @@ export const order_relation = relations(orders, ({ one }) => {
     //   fields: [orders.delivererId],
     //   references: [users.id],
     // }),
-    items: one(items, {
-      fields: [orders.items],
-      references: [items.id],
-    }),
+    items: many(items),
   };
 });
 
