@@ -72,7 +72,7 @@ export default function MainPage(props: Props) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {query.data.data.map((orderInfo: any, idx: any) => {
+              {query.data.data.map((orderInfo: any, idx: string) => {
                 return (
                   <TableRow key={idx}>
                     <TableCell className="font-medium">

@@ -10,7 +10,7 @@ export default function Footer() {
               <h3 className="text-5xl font-semibold">DeliverU</h3>
               <p className="mt-2 text-sm">Your favorite online store.</p>
             </div>
-            <div style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.6)" }}>
+            <div style={{ textShadow: "2px 2px 8px rgba(0, 0, 0, 0.6)" }}>
               <h3 className="text-lg font-semibold">Quick Links</h3>
               <ul className="mt-2 space-y-2">
                 <li>
@@ -37,9 +37,9 @@ export default function Footer() {
       </div>
       <div
         className="border-t border-gray-700 mt-10 pt-5 text-center text-sm text-gray-500"
-        style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.6)" }}
+        style={{ textShadow: "2px 1.5px 8px rgba(0, 0, 0, 0.6)" }}
       >
-        © 2023 DeliverU. Made by Zaid, Robby
+        © 2023 DeliverU. Made by Zaid, Robby, Ramin
       </div>
       <style jsx>{`
         footer {
