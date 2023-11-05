@@ -3,7 +3,7 @@ module.exports = {
 		{
 			name: "nametbd-ws",
 			script: "pnpm",
-			args: "run start",
+			args: "run start:ws",
 		},
 	],
 };
