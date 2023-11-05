@@ -13,7 +13,7 @@ export default function Component() {
         <div className="container mx-auto px-6 py-20 text-center">
           <h1 className="text-6xl font-bold text-white mb-4">DeliverU</h1>
           <p className="text-xl text-white mb-8">
-            Skip waiting in long lines and get back to studying.
+            Because cowboys don't wait in lines.
           </p>
           <div className="flex flex-col md:flex-row justify-center gap-10">
             {
