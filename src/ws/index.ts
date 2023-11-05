@@ -85,7 +85,7 @@ io.on("connection", (socket: Socket) => {
       const userId = await client
         .update(orders)
         .set({
-          status: status as any,
+          status: info.status as any,
         })
         .where(eq(orders.id, orderId))
         .returning();
