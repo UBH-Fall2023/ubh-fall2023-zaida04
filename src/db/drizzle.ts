@@ -61,7 +61,7 @@ export const orders = pgTable("orders", {
   tips: numeric("tips").notNull(),
   items: idArray("items"),
   ordererId: singleId("ordererId"),
-  delivererId: uuid("delivererId"),
+  delivererId: text("delivererId"),
   status: text("status", {
     enum: [
       "ordered",

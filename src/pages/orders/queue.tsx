@@ -15,14 +15,19 @@ import { Button } from "@/components/ui/button";
 import DelivererNavBar from "@/components/DelivererNavBar";
 import { useOrderSubscribe } from "@/hooks/useOrdersSubscribe";
 import { useJoinWalkers } from "@/hooks/useJoinWalkers";
+import { useSocket } from "@/contexts/SocketContext";
+import { useUser } from "@clerk/nextjs";
 
 type Props = {};
 
 export default function QueuePage(props: Props) {
   const router = useRouter();
+  const { socket, emitEvent } = useSocket();
+  const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
+  const { user } = useUser();
+  const delivererId = user?.id ?? null;
 
   useJoinWalkers();
-  const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
 
   const query = useQuery({
     queryFn: async () => await (await fetch("/api/orders")).json(),
@@ -42,16 +47,14 @@ export default function QueuePage(props: Props) {
   };
 
   const claimOrder = async () => {
-    const claimOrderStatus = await fetch("/api/orders");
-
+    socket.emit('claimOrder', delivererId, selectedOrders)
     router.push("/orders/current");
-    console.log("clicked");
   };
 
   useEffect(() => {
-    console.log(selectedOrders);
-    console.log(router);
-  }, [selectedOrders]);
+    if (!socket || !delivererId) return;
+    emitEvent("joinRoom", delivererId);
+  }, [socket]);
 
   return (
     <div>

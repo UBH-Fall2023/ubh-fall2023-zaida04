@@ -5,6 +5,8 @@ import { Item, Message, Order, items, messages, orders } from "../db/drizzle";
 import { makeDB } from "@/db/client";
 import { inspect } from "util";
 import express from "express";
+import { eq } from "drizzle-orm";
+
 enum Urgency {
   HIGH = "high",
   MEDIUM = "medium",
@@ -55,6 +57,25 @@ io.on("connection", (socket: Socket) => {
     socket.join("walkers");
     io.in;
   });
+
+  socket.on("claimOrder", async (delivererId: string, orderId: string[]) => {
+    orderId.forEach(async (orderId: string) => {
+      const order = await client.query.orders.findFirst({
+        where: eq(orders.id, orderId[0])
+      }).execute();
+
+      if (!order) return;
+
+      await client.update(orders)
+        .set({
+          delivererId,
+          status: 'claimed',
+        })
+        .where(eq(orders.id, order.id))
+
+      io.in(order.ordererId).emit('orderUpdate', 'claimed')
+    })
+  })
 
   socket.on("joinRoom", (meId: string) => {
     socket.join(meId);
