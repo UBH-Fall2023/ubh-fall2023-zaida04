@@ -46,7 +46,7 @@ export default function Index(props: Props) {
             </span>
           </p>
           {cart.items.map((cartItem) => (
-            <div className="flex w-full h-full items-center gap-2 border-b border-primary  p-4 ">
+            <div className="flex w-full items-center gap-2 border-b border-primary  p-4 ">
               <RemoveCartItem item={cartItem} />
               <CartItem
                 imgUrl={cartItem.src!}
