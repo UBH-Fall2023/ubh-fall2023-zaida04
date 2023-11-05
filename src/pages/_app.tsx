@@ -10,7 +10,13 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ClerkProvider {...pageProps}>
-      <SocketProvider url="http://localhost:4000/">
+      <SocketProvider
+        url={
+          process.env.VERCEL
+            ? "http://159.203.85.181:4000/"
+            : "http://localhost:4000/"
+        }
+      >
         <QueryClientProvider client={queryClient}>
           <Component {...pageProps} />
         </QueryClientProvider>
