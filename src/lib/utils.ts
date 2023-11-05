@@ -231,15 +231,10 @@ export const popularStores: Array<Store> = [
       "https://www.google.com/imgres?imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fen%2F8%2F80%2FMoes_logo.png&tbnid=KQSVX1gYLcvIiM&vet=12ahUKEwiQzYOE_6qCAxWaMFkFHYZnCgYQMygAegQIARB0..i&imgrefurl=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FMoe%2527s_Southwest_Grill&docid=9nvrR9H_tpN7UM&w=169&h=169&q=moes&ved=2ahUKEwiQzYOE_6qCAxWaMFkFHYZnCgYQMygAegQIARB0",
   },
   {
-    label: "Burger King 2",
+    label: "Subway",
     src: "https://1000logos.net/wp-content/uploads/2017/06/Subway-logo.png",
-    id: "burger-king-squared",
-    dishTypes: [
-      // { value: "burger-king" },
-      // { value: "burger-king1" },
-      // { value: "burger-king2" },
-      // { value: "burger-king2" },
-    ],
+    id: "subway",
+    dishTypes: [],
     items: [
       {
         dishType: "burger-king",
@@ -247,7 +242,7 @@ export const popularStores: Array<Store> = [
         name: "Something 7",
         price: 100,
         rating: 1,
-        restaurantName: "burger-king-squared",
+        restaurantName: "subway",
         id: crypto.randomUUID(),
       },
       {
@@ -256,7 +251,7 @@ export const popularStores: Array<Store> = [
         name: "Something 8",
         price: 100,
         rating: 1,
-        restaurantName: "burger-king-squared",
+        restaurantName: "subway",
         id: crypto.randomUUID(),
       },
     ],
