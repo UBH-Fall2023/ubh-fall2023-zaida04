@@ -77,11 +77,9 @@ io.on("connection", (socket: Socket) => {
   });
 
   socket.on("order", async (m: OrderForm & {}) => {
-    console.log({ m });
-
-    // await client.insert(orders).values({
-
-    // });
+    await client.insert(orders).values({
+      items,
+    });
   });
 
   socket.on("disconnect", () => {
