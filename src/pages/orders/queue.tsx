@@ -18,7 +18,7 @@ import { useJoinWalkers } from "@/hooks/useJoinWalkers";
 
 type Props = {};
 
-export default function MainPage(props: Props) {
+export default function QueuePage(props: Props) {
   const router = useRouter();
 
   useJoinWalkers();
