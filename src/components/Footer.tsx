@@ -39,7 +39,7 @@ export default function Footer() {
         className="border-t border-gray-700 mt-10 pt-5 text-center text-sm text-gray-500"
         style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.6)" }}
       >
-        © 2023 MyStore. All rights reserved.
+        © 2023 DeliverU. All rights reserved.
       </div>
       <style jsx>{`
         footer {
