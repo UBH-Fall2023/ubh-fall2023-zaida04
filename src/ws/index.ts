@@ -37,6 +37,7 @@ type OrderForm = {
   paymentType: Payment;
   urgency: Urgency;
   schedule: string;
+  datePlaced: number;
 };
 const app = express();
 const { client } = makeDB(process.env.DATABASE_URL!);
@@ -60,22 +61,25 @@ io.on("connection", (socket: Socket) => {
 
   socket.on("claimOrder", async (delivererId: string, orderId: string[]) => {
     orderId.forEach(async (orderId: string) => {
-      const order = await client.query.orders.findFirst({
-        where: eq(orders.id, orderId[0])
-      }).execute();
+      const order = await client.query.orders
+        .findFirst({
+          where: eq(orders.id, orderId[0]),
+        })
+        .execute();
 
       if (!order) return;
 
-      await client.update(orders)
+      await client
+        .update(orders)
         .set({
           delivererId,
-          status: 'claimed',
+          status: "claimed",
         })
-        .where(eq(orders.id, order.id))
+        .where(eq(orders.id, order.id));
 
-      io.in(order.ordererId).emit('orderUpdate', 'claimed')
-    })
-  })
+      io.in(order.ordererId).emit("orderUpdate", "claimed");
+    });
+  });
 
   socket.on("joinRoom", (meId: string) => {
     socket.join(meId);

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 type Props = {};
 
 const index = (props: Props) => {
+  useEffect(() => {}, []);
   return (
     <div className="h-screen w-screen bg-green-600 flex items-center justify-center">
       <span className="h-36 w-36  delay-0 rounded-full animate-pulse bg-green-700" />

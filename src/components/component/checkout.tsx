@@ -31,6 +31,7 @@ import { OrderForm, Payment, Urgency } from "@/lib/types";
 export function Checkout() {
   const [cart, setCard] = useAtom(cartAtom);
 
+  const [isLoading, setIsLoading] = useState(false);
   const [formState, setFormState] = useState<OrderForm>({
     location: "",
     name: "",
@@ -149,6 +150,7 @@ export function Checkout() {
                 ...cart,
                 orderedId: user?.id,
               });
+              setIsLoading(true);
               socket.emit(
                 "order",
                 {
@@ -157,6 +159,7 @@ export function Checkout() {
                   orderedId: user?.id,
                 },
                 () => {
+                  setIsLoading(false);
                   router.push("ordering");
                 },
               );
@@ -165,7 +168,7 @@ export function Checkout() {
             }}
             className="w-2/5 rounded-lg"
           >
-            Place order
+            {isLoading ? "Loading..." : "Place order"}
           </Button>
           <Button
             variant={"secondary"}
