@@ -1,19 +1,22 @@
-import Timeline from "@/components/TimeLine";
-import React, { useEffect } from "react";
+import Timeline, { ThingaMajig } from "@/components/TimeLine";
+import { useSocket } from "@/contexts/SocketContext";
+import React, { useEffect, useState } from "react";
 
 type Props = {};
 
-const index = (props: Props) => {
+export default function (props: Props) {
+  const { socket } = useSocket();
+  const [status, setStatus] = useState<ThingaMajig>("ordered");
+  useEffect(() => {
+    if (!socket) return;
+    socket.on("orderUpdate", (status: ThingaMajig) => {
+      setStatus(status);
+    });
+  }, [socket]);
   return (
     <div className="h-screen w-screen  flex items-center justify-center">
-      <Timeline status="ordered" />
-      <div className="flex flex-col">
-        {/* <span className="h-36 w-36  delay-0 rounded-full animate-pulse bg-primary" />
-        <span className="h-36 w-36  delay-500 rounded-full animate-pulse bg-primary" />
-        <span className="h-36 w-36  delay-1000 top-0 right-0 transition  rounded-full animate-pulse bg-primary" /> */}
-      </div>
+      <Timeline status={status ?? "ordered"} />
+      <div className="flex flex-col"></div>
     </div>
   );
-};
-
-export default index;
+}

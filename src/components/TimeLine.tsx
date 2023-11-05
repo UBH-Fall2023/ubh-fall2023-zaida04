@@ -91,7 +91,9 @@ const statusRanking = {
   delivered: 5,
 };
 
-function Timeline({ status }: { status: keyof typeof statusRanking }) {
+export type ThingaMajig = keyof typeof statusRanking;
+
+function Timeline({ status }: { status: ThingaMajig }) {
   const getWhatShouldBeColored = () => {
     const totalOrdering = statusRanking[status];
 

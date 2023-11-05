@@ -80,11 +80,11 @@ io.on("connection", (socket: Socket) => {
     });
   });
 
-  socket.on("updateOrderStatus", async (orderId: string, status: any) => {
+  socket.on("updateOrderStatus", async (orderId: string, status: string) => {
     const userId = await client
       .update(orders)
       .set({
-        status,
+        status: status as any,
       })
       .where(eq(orders.id, orderId))
       .returning();
@@ -108,10 +108,6 @@ io.on("connection", (socket: Socket) => {
       createdAt: new Date(),
       receiverId: msg.receiverId,
     });
-    console.log(
-      `New message: ${msg.content} from user ${msg.senderId} to user ${msg.receiverId}`,
-    );
-
     io.in(msg.receiverId).emit("chatMessage", msg);
     io.in(msg.senderId).emit("chatMessage", msg);
   });

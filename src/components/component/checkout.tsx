@@ -143,16 +143,11 @@ export function Checkout() {
           <Button
             onClick={async () => {
               if (!user?.id) {
-                console.log("shit");
                 return;
               }
-              console.log("going out", {
-                ...{ ...formState, timePlaced: Date.now() },
-                ...cart,
-                orderedId: user?.id,
-              });
+
               setIsLoading(true);
-              console.log({ cart });
+
               socket.emit(
                 "order",
                 {
