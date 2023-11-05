@@ -94,14 +94,23 @@ export default function ChatRoom() {
         id="chat-container"
         className="flex-grow overflow-y-auto p-4 space-y-4"
       >
-        {messages.map((message) => (
-          <ChatMessage
-            isMe={message.senderId === senderId}
-            key={message.id}
-            message={message}
-            user={users.find((user) => user.id === message.senderId) ?? null}
-          />
-        ))}
+        {messages
+          .filter(
+            (message, index, self) =>
+              index === self.findIndex((m) => m.id === message.id),
+          )
+          .map((message) => {
+            return (
+              <ChatMessage
+                isMe={message.senderId === senderId}
+                key={message.id}
+                message={message}
+                user={
+                  users.find((user) => user.id === message.senderId) ?? null
+                }
+              />
+            );
+          })}
       </div>
       <form
         onSubmit={handleSubmit(handleSendMessage)}
@@ -158,8 +167,8 @@ function ChatMessage(props: {
   user: User | null;
   isMe: boolean;
 }) {
-  const color = props.isMe ? "bg-green-500" : "bg-blue-500";
-  const itemsPosition = props.isMe ? "flex-row" : "flex-row-reverse";
+  const color = !props.isMe ? "bg-green-500" : "bg-blue-500";
+  const itemsPosition = !props.isMe ? "flex-row" : "flex-row-reverse";
 
   return (
     <div className={`flex gap-2 space-x-2 ${itemsPosition}`}>
