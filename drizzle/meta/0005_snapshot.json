@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "53d23136-9b51-4867-9f59-2175e0cfbc8f",
-  "prevId": "29e02df4-b844-4757-a4b0-b13eae35687e",
+  "id": "01c7d9cc-4467-409a-b4e4-13904c542e2c",
+  "prevId": "ff2fc476-43b7-43b8-9616-3e80b2971f2a",
   "tables": {
     "items": {
       "name": "items",
@@ -137,7 +137,7 @@
           "name": "delivererId",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "status": {
           "name": "status",
