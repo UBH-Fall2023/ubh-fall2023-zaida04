@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
 import DelivererNavBar from "@/components/DelivererNavBar";
 import {
@@ -8,30 +8,42 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Button } from '../../components/ui/button';
+} from "@/components/ui/card";
+import { Button } from "../../components/ui/button";
 import { useSocket } from "@/contexts/SocketContext";
 import { useUser } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
 
 export default function OrderIndexPage() {
-  const router = useRouter()
+  const router = useRouter();
+  const [currentOrders, setCurrentOrders] = useState([]);
   const { socket, emitEvent } = useSocket();
   const { user } = useUser();
   const delivererId = user?.id ?? null;
 
   const sendStatusUpdate = (statusUpdate: number) => {
     if (statusUpdate === 0) {
-      socket.emit('updateOrderStatus', currentOrders.ordererId, 'picked-up')
+      socket.emit("updateOrderStatus", currentOrders.ordererId, "picked-up");
     }
 
     if (statusUpdate === 1) {
-      socket.emit('updateOrderStatus', currentOrders.ordererId, 'delivered')
+      socket.emit("updateOrderStatus", currentOrders.ordererId, "delivered");
     }
-  }
+  };
+
+  useEffect(() => {
+    async function fetchOrders() {
+      const res = await fetch("/api/orders/current");
+      const data = await res.json();
+      setCurrentOrders(data.items);
+    }
+
+    fetchOrders();
+  }, [currentOrders]);
 
   return (
     <div>
-      <DelivererNavBar route={router.pathname}/>
+      <DelivererNavBar route={router.pathname} />
       <div className="mt-8 flex flex-column md:flex-row w-100 justify-center align-center">
         <Card>
           <CardHeader>
@@ -49,7 +61,9 @@ export default function OrderIndexPage() {
             </div>
           </CardContent>
           <CardFooter className="w-max flex flex-row justify-around">
-            <Button variant="outline" onClick={() => sendStatusUpdate(0)}>Picked Up</Button>
+            <Button variant="outline" onClick={() => sendStatusUpdate(0)}>
+              Picked Up
+            </Button>
             <Button variant="outline">Delivered</Button>
             <Button variant="outline">Chat</Button>
           </CardFooter>
@@ -57,5 +71,5 @@ export default function OrderIndexPage() {
       </div>
       <h1>Hi</h1>
     </div>
-  )
+  );
 }

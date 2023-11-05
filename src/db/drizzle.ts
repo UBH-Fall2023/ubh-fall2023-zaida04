@@ -62,6 +62,10 @@ export const orders = pgTable("orders", {
   items: idArray("items"),
   ordererId: singleId("ordererId"),
   delivererId: text("delivererId"),
+  paymentType: text("paymentType"),
+  schedule: text("schedule"),
+  urgency: text("urgency"),
+  location: text("location"),
   status: text("status", {
     enum: [
       "ordered",
