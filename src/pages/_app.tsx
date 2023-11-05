@@ -9,11 +9,7 @@ import Test from "./Test";
 
 export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient();
-  const [user, setUser] = useState<User | null>({
-    // this data is purely for rendering during ssr and is dumb
-    id: crypto.randomUUID(),
-    role: Role.CLIENT,
-  });
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const oldUser = localStorage.getItem("user");
@@ -34,9 +30,6 @@ export default function App({ Component, pageProps }: AppProps) {
     <UserContext.Provider value={user}>
       <SocketProvider url="http://localhost:4000/">
         <QueryClientProvider client={queryClient}>
-          <div className="w-full h-16 bg-red">
-            <Test />
-          </div>
           <Component {...pageProps} />
         </QueryClientProvider>
       </SocketProvider>

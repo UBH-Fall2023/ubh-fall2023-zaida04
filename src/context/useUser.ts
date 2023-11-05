@@ -4,8 +4,9 @@ import { User, UserContext } from "./UserProvider";
 export const useUser = () => {
   const user = useContext(UserContext);
 
-  if (!user || !user.id || !user.role) {
-    throw new Error("Must be under user context");
+  if (typeof window === "undefined") {
+    return;
   }
-  return user as { [K in keyof User]: NonNullable<User[K]> };
+
+  return user;
 };
