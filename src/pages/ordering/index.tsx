@@ -41,6 +41,7 @@ export default function (props: Props) {
     <div className="h-screen w-screen  flex flex-col items-center justify-center">
       <Timeline status={status ?? "ordered"} />
       <Button
+        disabled={status === "ordered"}
         onClick={() => {
           if (!user || !delivererId) return;
           router.push(`/chat/${user.id}/${delivererId}`);

@@ -45,7 +45,7 @@ function PathCard(props: {
 }) {
   return (
     <Link href={props.href}>
-      <div className="bg-white rounded-lg p-10 shadow-lg border-2 border-orange-500 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-110">
+      <div className="bg-white rounded-lg p-10 shadow-lg border-2 border-orange-500 transition duration-200 ease-in-out transform hover:scale-[1.01]">
         {props.icon}
         <h2 className="text-2xl font-bold mb-2">{props.title}</h2>
         <p className="text-gray-800">{props.description}</p>

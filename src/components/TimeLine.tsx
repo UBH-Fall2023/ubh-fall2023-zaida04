@@ -96,7 +96,11 @@ function Timeline({ status }: { status: ThingaMajig }) {
   };
 
   return (
-    <div className="max-w-4xl border-2 w-1/2 mx-auto py-8 border-b-none rounded-b-none p-4 border-primary rounded-md">
+    <div
+      className={`
+
+    max-w-4xl border-2 w-1/2 mx-auto py-8 border-b-0 rounded-b-none p-4 border-primary rounded-md`}
+    >
       <h1 className="text-3xl font-bold mb-8">Timeline</h1>
       <div className="mt-8">
         {data.map((event, idx) => (
