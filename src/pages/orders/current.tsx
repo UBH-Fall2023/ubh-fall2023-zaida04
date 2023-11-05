@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { Item, Order } from "@/db/drizzle";
 import { User } from "@clerk/nextjs/server";
 import { Loader, MessageCircle } from "lucide-react";
+import { formatDistance } from 'date-fns';
 
 export default function OrderIndexPage() {
   const router = useRouter();
@@ -66,9 +67,8 @@ export default function OrderIndexPage() {
     <div>
       <DelivererNavBar route={router.pathname} />
 
-      <div className="w-full flex gap-2 justify-center items-center flex-col h-full">
+      <div className="w-full flex flex-col gap-5 justify-center items-center">
         {isLoading ? (
-          // <Loader className="animate-spin" />
           <div className="animate-pulse border border-rounded bg-secondary rounded-md shadow-md h-56 w-72"></div>
         ) : (
           currentOrders.map((order) => {
@@ -77,7 +77,7 @@ export default function OrderIndexPage() {
             return (
               <Delivery
                 name={currentUser?.firstName ?? currentUser?.username ?? ""}
-                time={"Today"}
+                time={order.createdAt}
                 allItems={items}
                 ordererId={order.ordererId!}
                 id={order.id}
@@ -96,7 +96,7 @@ export default function OrderIndexPage() {
 
 function Delivery(props: {
   name: string;
-  time: string;
+  time: Date | null;
   id: string;
   allItems: Item[];
   items: string[];
@@ -111,7 +111,7 @@ function Delivery(props: {
     <Card>
       <CardHeader>
         <CardTitle>Order from {props.name}</CardTitle>
-        <CardDescription>Placed at {props.time}</CardDescription>
+        {props.time ? <CardDescription>Placed {formatDistance(new Date(props.time), new Date())} ago</CardDescription> : null}
       </CardHeader>
       <CardContent>
         <div>
