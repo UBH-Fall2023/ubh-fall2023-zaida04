@@ -64,10 +64,10 @@ export default function Index(props: Props) {
 
   const [filledStars, setFilledStars] = useState<Array<boolean>>([
     true,
-    true,
-    true,
-    true,
-    true,
+    false,
+    false,
+    false,
+    false,
   ]);
   // console.log(query, router);
   // const query = router.query as { store: string | null };
@@ -234,6 +234,14 @@ export default function Index(props: Props) {
                     (item) => item.dishType === query.searchParams?.get("type"),
                   )
                   .filter((i) => i.price <= (sliderValue.at(0) ?? 100))
+                  .filter(
+                    (i) =>
+                      i.rating >=
+                      filledStars.reduce(
+                        (prev, curr) => prev + (curr ? 1 : 0),
+                        0,
+                      ),
+                  )
                   .filter((item) =>
                     !searchItemsQuery
                       ? true
