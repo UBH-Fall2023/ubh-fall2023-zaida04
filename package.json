@@ -10,6 +10,7 @@
     "start": "next start",
     "lint": "next lint",
     "start:ws": "node dist/ws/index.js",
+    "start:ws:pm2": "pm2 start",
     "migrate:generate": "drizzle-kit generate:pg --schema=./src/db/drizzle.ts",
     "migrate:run": "tsx src/db/run-migrations.ts",
     "seed": "tsx src/db/seed.ts"
