@@ -88,6 +88,7 @@ export const messages = pgTable("messages", {
   // roomId: uuid("roomId"),
   createdAt: timestamp("createdAt").$defaultFn(() => new Date()),
   senderId: singleId("senderId"),
+  imageUrls: text("imageUrl").array(),
   receiverId: singleId("receiverId"),
 });
 export type Message = typeof messages.$inferSelect;

@@ -33,6 +33,7 @@ io.on("connection", (socket: Socket) => {
     await client.insert(messages).values({
       content: msg.content,
       senderId: msg.senderId,
+      imageUrls: msg.imageUrls,
       createdAt: new Date(),
       receiverId: msg.receiverId,
     });

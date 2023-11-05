@@ -5,8 +5,10 @@ import { messageAtoms } from "@/lib/state";
 import { Message, User } from "@/db/drizzle";
 import { useSocket } from "@/contexts/SocketContext";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { UploadButton } from "@/components/upload";
+import { UploadFileResponse } from "uploadthing/client";
 
 interface FormValues {
   message: string;
@@ -15,6 +17,9 @@ export default function ChatRoom() {
   const router = useRouter();
   const [messages, setMessages] = useAtom(messageAtoms);
   const [users, setUsers] = useState<User[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<UploadFileResponse[]>(
+    [],
+  );
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const { socket, emitEvent } = useSocket();
   const senderId = router.query.starterId as string;
@@ -22,10 +27,12 @@ export default function ChatRoom() {
 
   const handleSendMessage = (data: FormValues) => {
     reset();
+    setUploadedImages([]);
     return emitEvent("newMessage", {
       senderId,
       content: data.message,
       receiverId,
+      imageUrls: uploadedImages.map((x) => x.url),
       createdAt: new Date(),
     } satisfies Omit<Message, "id">);
   };
@@ -72,7 +79,7 @@ export default function ChatRoom() {
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="flex gap-4 p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <h2 className="text-xl font-bold">Chat</h2>
         <p>You are {users.find((user) => user.id === senderId)?.firstName}</p>
       </div>
@@ -93,7 +100,7 @@ export default function ChatRoom() {
         onSubmit={handleSubmit(handleSendMessage)}
         className="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700"
       >
-        <div className="flex space-x-2">
+        <div className="flex md:flex-row flex-col gap-2">
           <Input
             className="flex-grow rounded-md"
             placeholder="Type a message..."
@@ -103,7 +110,36 @@ export default function ChatRoom() {
               required: true,
             })}
           />
-          <Button onClick={handleSubmit(handleSendMessage)}>Send</Button>
+          <div className="flex flex-row gap-1">
+            <UploadButton
+              endpoint="imageUploader"
+              content={{
+                button: <p>Upload</p>,
+              }}
+              appearance={{
+                button: {
+                  width: "fit-content",
+                  whiteSpace: "nowrap",
+                  paddingLeft: "1.5rem",
+                  paddingRight: "1.5rem",
+                },
+              }}
+              onClientUploadComplete={(res) => {
+                if (!res) return;
+                const toAdd = Array.isArray(res) ? res : [res];
+                setUploadedImages((images) => [...images, ...toAdd]);
+              }}
+              onUploadError={(error: Error) => {
+                alert(`ERROR! ${error.message}`);
+              }}
+            />
+            <Button
+              className="w-full"
+              onClick={handleSubmit(handleSendMessage)}
+            >
+              Send
+            </Button>
+          </div>
         </div>
       </form>
     </div>
