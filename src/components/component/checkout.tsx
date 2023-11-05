@@ -156,7 +156,13 @@ export function Checkout() {
                 "order",
                 {
                   ...formState,
-                  ...cart,
+                  ...{
+                    ...cart,
+                    items: cart.items.map((item) => ({
+                      ...item,
+                      checkoutId: crypto.randomUUID(),
+                    })),
+                  },
                   orderedId: user?.id,
                 },
                 () => {

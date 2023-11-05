@@ -9,31 +9,13 @@ type Props = {};
 
 export default function Index(props: Props) {
   const [cart, setCart] = useAtom(cartAtom);
-  // useEffect(() => {
-  //   const item = localStorage.getItem("cart");
-  //   if (!item) {
-  //     return;
-  //   }
-  //   setCart(JSON.parse(item) as { items: Array<MealItem> });
-  // }, []);
-  // t j
 
   return (
     <div className="bg-[#FEFEFEFE] ">
       <NavBar />
 
-      {/* {cart.items.map((cartItem) => (
-        <div className="border rounded-md w-fit p-3">{cartItem.name}</div>
-      ))} */}
       <div className="w-full h-screen flex">
         <div className="w-1/2 h-full border-r bg-secondary grid col-span-2">
-          {/* {cart.items.map((cartItem) => (
-            <div className="w-full h-20"></div>
-            // <div className="border rounded-md w-fit p-3 flex bg-primary">
-            //   <div className="w-1/2 h-full">{cartItem.name}</div>
-            //   <div className="w-1/2 h-full">{cartItem.price}</div>
-            // </div>
-          ))} */}
           <Checkout />
         </div>
         <div className="w-1/2 h-full flex flex-col items-center gap-y-5 p-5 overflow-y-scroll">
@@ -48,34 +30,16 @@ export default function Index(props: Props) {
           </p>
           {cart.items.map((cartItem) => (
             <div className="flex w-full h-full items-center gap-2 border-b border-primary  p-4 ">
-              {/* <Minus />
-               */}
               <RemoveCartItem item={cartItem} />
               <CartItem
                 imgUrl={cartItem.src!}
                 item={cartItem.name}
                 price={cartItem.price.toString()}
               />
-              {/* <div className="border-2 shadow-lg rounded-md  text-lg font-semibold items-center justify-center  h-fit flex-col  w-fit">
-                {cartItem.name}
-
-                {cartItem.src && (
-                  <Image
-                    width={"200"}
-                    height={"200"}
-                    alt={cartItem.name}
-                    src={cartItem.src}
-                  />
-                )}
-              </div> */}
               <span className="font-semibold text-lg">
                 ${cartItem.price.toFixed(2)}
               </span>
             </div>
-            // <div className="border rounded-md w-fit p-3 flex bg-primary">
-            //   <div className="w-1/2 h-full">{cartItem.name}</div>
-            //   <div className="w-1/2 h-full">{cartItem.price}</div>
-            // </div>
           ))}
         </div>
       </div>
