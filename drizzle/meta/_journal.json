@@ -26,13 +26,8 @@
     {
       "idx": 3,
       "version": "5",
-<<<<<<< Updated upstream
       "when": 1699138279540,
       "tag": "0003_freezing_lizard",
-=======
-      "when": 1699138401823,
-      "tag": "0003_acoustic_susan_delgado",
->>>>>>> Stashed changes
       "breakpoints": true
     },
     {
