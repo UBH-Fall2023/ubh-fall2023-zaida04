@@ -35,7 +35,7 @@ export type Store = {
 
 export const popularStores: Array<Store> = [
   {
-    label: "Tim Horton's",
+    label: "Tim Hortons",
     src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4C0IiAEY-d0P197JeqM25tRkN0wBn-g__XdqC2c6GFrJLp1sh_57myS59r88osFf_pno&usqp=CAU",
     id: "tim-horton",
     dishTypes: [
