@@ -20,8 +20,36 @@ import {
   Select,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-
+import { useState } from "react";
+import { useSocket } from "@/contexts/SocketContext";
+enum Urgency {
+  HIGH = "high",
+  MEDIUM = "medium",
+  LOW = "low",
+}
+enum Payment {
+  VENMO = "venmo",
+  CASHAPP = "cashapp",
+  CASH = "cash",
+}
+type OrderForm = {
+  name: string;
+  location: string;
+  paymentType: Payment;
+  urgency: Urgency;
+  schedule: string;
+};
 export function Checkout() {
+  const [formState, setFormState] = useState<OrderForm>({
+    location: "",
+    name: "",
+    paymentType: Payment.VENMO,
+    schedule: "now",
+    urgency: Urgency.MEDIUM,
+  });
+
+  const { socket, emitEvent } = useSocket();
+
   return (
     <Card className="w-full max-w-2xl md:max-w-4xl">
       <CardHeader>
@@ -31,15 +59,34 @@ export function Checkout() {
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="name">Name</Label>
-          <Input id="name" placeholder="Enter your name" />
+          <Input
+            value={formState.name}
+            onChange={(e) =>
+              setFormState((prev) => ({ ...prev, name: e.target.value }))
+            }
+            id="name"
+            placeholder="Enter your name"
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="location">Location</Label>
-          <Input id="location" placeholder="Enter your location" />
+          <Input
+            value={formState.location}
+            onChange={(e) =>
+              setFormState((prev) => ({ ...prev, location: e.target.value }))
+            }
+            id="location"
+            placeholder="Enter your location"
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="payment-type">Payment Type</Label>
-          <Select>
+          <Select
+            value={formState.paymentType}
+            onValueChange={(v) =>
+              setFormState((prev) => ({ ...prev, paymentType: v as Payment }))
+            }
+          >
             <SelectTrigger aria-label="Payment Type" id="payment-type">
               <SelectValue placeholder="Select Payment Type" />
             </SelectTrigger>
@@ -52,7 +99,12 @@ export function Checkout() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="urgency">Urgency</Label>
-          <Select>
+          <Select
+            value={formState.urgency}
+            onValueChange={(v) =>
+              setFormState((prev) => ({ ...prev, urgency: v as Urgency }))
+            }
+          >
             <SelectTrigger aria-label="Urgency" id="urgency">
               <SelectValue placeholder="Select Urgency Level" />
             </SelectTrigger>
@@ -65,7 +117,12 @@ export function Checkout() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="schedule">Schedule</Label>
-          <Select>
+          <Select
+            value={formState.schedule}
+            onValueChange={(v) =>
+              setFormState((prev) => ({ ...prev, schedule: v }))
+            }
+          >
             <SelectTrigger aria-label="Schedule" id="schedule">
               <SelectValue placeholder="Select Schedule" />
             </SelectTrigger>
@@ -84,7 +141,14 @@ export function Checkout() {
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-3/4 rounded-lg">Place order</Button>
+        <Button
+          onClick={() => {
+            socket.emit("order", formState);
+          }}
+          className="w-3/4 rounded-lg"
+        >
+          Place order
+        </Button>
       </CardFooter>
     </Card>
   );

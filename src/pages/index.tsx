@@ -2,6 +2,8 @@ import Footer from "@/components/Footer";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import { ReactNode, memo } from "react";
+import { Button } from "@/components/ui/button";
+import { useUser } from "@/context/useUser";
 
 const inter = Inter({ subsets: ["latin"] });
 
