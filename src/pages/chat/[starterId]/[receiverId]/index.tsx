@@ -179,7 +179,16 @@ function ChatMessage(props: {
       <div
         className={`py-2 px-3 h-fit rounded-lg text-white max-w-xs ${color}`}
       >
-        <p>{props.message.content}</p>
+        <p className="pb-2">{props.message.content}</p>
+        <div className="flex flex-col gap-2">
+          {props.message.imageUrls?.map((url) => (
+            <img
+              src={url}
+              alt="Uploaded image"
+              className="w-full h-auto rounded-lg"
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
