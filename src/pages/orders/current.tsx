@@ -25,13 +25,13 @@ export default function OrderIndexPage() {
   const { user } = useUser();
   const delivererId = user?.id ?? null;
 
-  const sendStatusUpdate = (statusUpdate: number) => {
+  const sendStatusUpdate = (orderId: string, statusUpdate: number) => {
     if (statusUpdate === 0) {
-      socket.emit("updateOrderStatus", currentOrders.ordererId, "picked-up");
+      socket.emit("updateOrderStatus", orderId, "picked-up");
     }
 
     if (statusUpdate === 1) {
-      socket.emit("updateOrderStatus", currentOrders.ordererId, "delivered");
+      socket.emit("updateOrderStatus", orderId, "delivered");
     }
   };
 
@@ -64,8 +64,10 @@ export default function OrderIndexPage() {
                 name={currentUser?.firstName ?? currentUser?.username ?? ""}
                 time={"Today"}
                 allItems={items}
+                id={order.id}
                 items={order.items}
                 location={order.location!}
+                sendStatusUpdate={sendStatusUpdate}
               />
             );
           })}
@@ -78,9 +80,11 @@ export default function OrderIndexPage() {
 function Delivery(props: {
   name: string;
   time: string;
+  id: string;
   allItems: Item[];
   items: string[];
   location: string;
+  sendStatusUpdate: any;
 }) {
   console.log(props);
   return (
@@ -106,10 +110,18 @@ function Delivery(props: {
         </div>
       </CardContent>
       <CardFooter className="w-max flex flex-row justify-around">
-        <Button variant="outline" onClick={() => null}>
+        <Button
+          variant="outline"
+          onClick={() => props.sendStatusUpdate(props.id, 0)}
+        >
           Picked Up
         </Button>
-        <Button variant="outline">Delivered</Button>
+        <Button
+          variant="outline"
+          onClick={() => props.sendStatusUpdate(props.id, 1)}
+        >
+          Delivered
+        </Button>
         <Button variant="outline">Chat</Button>
       </CardFooter>
     </Card>
