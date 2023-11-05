@@ -15,6 +15,7 @@ import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { Item, Order } from "@/db/drizzle";
 import { User } from "@clerk/nextjs/server";
+import { Loader, MessageCircle } from "lucide-react";
 
 export default function OrderIndexPage() {
   const router = useRouter();
@@ -24,6 +25,7 @@ export default function OrderIndexPage() {
   const { socket, emitEvent } = useSocket();
   const { user } = useUser();
   const delivererId = user?.id ?? null;
+  const [isLoading, setIsLoading] = useState(false);
 
   const sendStatusUpdate = (orderId: string, statusUpdate: number) => {
     console.log("hate all", statusUpdate);
@@ -46,8 +48,10 @@ export default function OrderIndexPage() {
     if (!delivererId) return;
 
     async function fetchOrders() {
+      setIsLoading(true);
       const res = await fetch("/api/orders/current?delivererId=" + delivererId);
       const data = await res.json();
+      setIsLoading(false);
       console.log(data);
       setCurrentOrders(data.items);
       setUsers(data.users);
@@ -61,9 +65,13 @@ export default function OrderIndexPage() {
   return (
     <div>
       <DelivererNavBar route={router.pathname} />
-      <div className="w-full flex justify-center">
-        <div className="mt-8 gap-4 flex flex-col w-fit justify-center items-center align-center">
-          {currentOrders.map((order) => {
+
+      <div className="w-full flex justify-center items-center">
+        {isLoading ? (
+          // <Loader className="animate-spin" />
+          <div className="animate-pulse border border-rounded bg-secondary rounded-md shadow-md h-56 w-72"></div>
+        ) : (
+          currentOrders.map((order) => {
             const currentUser = users.find((x) => x.id === order.ordererId);
 
             return (
@@ -77,8 +85,9 @@ export default function OrderIndexPage() {
                 sendStatusUpdate={sendStatusUpdate}
               />
             );
-          })}
-        </div>
+          })
+        )}
+        <div className="mt-8 gap-4 flex flex-col w-fit justify-center items-center align-center"></div>
       </div>
     </div>
   );
@@ -120,7 +129,7 @@ function Delivery(props: {
           <span>{props.location}</span>
         </div>
       </CardContent>
-      <CardFooter className="w-max flex flex-row justify-around">
+      <CardFooter className="flex flex-row justify-evenly w-full  p-0 py-2 items-center">
         <Button
           variant="outline"
           onClick={() => props.sendStatusUpdate(props.id, 0)}
@@ -133,7 +142,9 @@ function Delivery(props: {
         >
           Delivered
         </Button>
-        <Button variant="outline">Chat</Button>
+        <Button size={"icon"} variant="outline">
+          <MessageCircle />
+        </Button>
       </CardFooter>
     </Card>
   );

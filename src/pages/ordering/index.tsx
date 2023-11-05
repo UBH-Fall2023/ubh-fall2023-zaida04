@@ -29,7 +29,6 @@ export default function (props: Props) {
         console.log({ delivererId });
         if (delivererId) {
           setDelivererId(delivererId);
-          // router.push(`?starterId=${user.id}&receiverId=${delivererId}`);
         }
 
         setStatus(status);
